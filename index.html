@@ -938,6 +938,8 @@
         let awake = false;
         let following = false;
         let docked = false;
+        let hunt = null;
+        let tapStart = null;
 
         const prey = [];
         const bites = [];
@@ -995,6 +997,7 @@
         function sleepShark() {
           awake = false;
           following = false;
+          hunt = null;
           shark.classList.add("sleeping");
           shark.setAttribute("aria-label", "Wake the shark");
           goHome();
@@ -1085,11 +1088,74 @@
           "pointermove",
           function (event) {
             if (!awake) return;
+            if (event.pointerType === "touch") return;
             following = true;
+            hunt = null;
             tx = event.clientX;
             ty = event.clientY;
           },
           { passive: true, capture: true }
+        );
+
+        function ignoreTapTarget(target) {
+          return !!(target && target.closest && target.closest("a, button, input, textarea, select, .cave, .shark"));
+        }
+
+        function sendSharkTo(clientX, clientY) {
+          if (!awake) return;
+          following = true;
+          hunt = null;
+          let nearest = null;
+          let nearestDist = 44;
+          for (let i = 0; i < prey.length; i++) {
+            const fish = prey[i];
+            if (fish.eaten) continue;
+            const dist = Math.hypot(fish.x - clientX, fish.y - clientY);
+            if (dist < nearestDist) {
+              nearestDist = dist;
+              nearest = fish;
+            }
+          }
+          if (nearest) {
+            hunt = nearest;
+            tx = nearest.x;
+            ty = nearest.y;
+          } else {
+            tx = clientX;
+            ty = clientY;
+          }
+        }
+
+        window.addEventListener(
+          "pointerdown",
+          function (event) {
+            if (event.pointerType !== "touch" && event.pointerType !== "pen") return;
+            tapStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+          },
+          { passive: true, capture: true }
+        );
+
+        window.addEventListener(
+          "pointerup",
+          function (event) {
+            if (!tapStart || event.pointerId !== tapStart.id) return;
+            const dx = event.clientX - tapStart.x;
+            const dy = event.clientY - tapStart.y;
+            tapStart = null;
+            if (!awake) return;
+            if (Math.hypot(dx, dy) > 12) return;
+            if (ignoreTapTarget(event.target)) return;
+            sendSharkTo(event.clientX, event.clientY);
+          },
+          { capture: true }
+        );
+
+        window.addEventListener(
+          "pointercancel",
+          function () {
+            tapStart = null;
+          },
+          { capture: true }
         );
 
         shark.addEventListener("click", function (event) {
@@ -1131,6 +1197,13 @@
               const home = restPoint();
               tx = home.x;
               ty = home.y;
+            } else if (hunt) {
+              if (hunt.eaten) {
+                hunt = null;
+              } else {
+                tx = hunt.x;
+                ty = hunt.y;
+              }
             }
 
             const trail = awake ? 28 : 0;
