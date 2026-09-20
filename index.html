@@ -38,6 +38,8 @@
         background: var(--body-bg);
         color: var(--body-color);
         min-height: 100%;
+        max-width: 100%;
+        overflow-x: clip;
       }
 
       body {
@@ -153,6 +155,27 @@
       .article > header time {
         color: var(--muted);
         font-weight: 460;
+      }
+
+      .header-top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .fish-counter {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.875rem;
+        font-weight: 460;
+        letter-spacing: -0.00563rem;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      .fish-counter.is-in {
+        animation: staggerIn 0.35s ease both;
       }
 
       .article > p {
@@ -339,12 +362,45 @@
         margin: 0 0 2.375rem;
       }
 
+      .footer-row {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1.25rem;
+      }
+
       .site-footer p {
         color: var(--muted);
         font-size: 0.8125rem;
         font-weight: 460;
         letter-spacing: -0.0025rem;
         font-variant-numeric: tabular-nums;
+      }
+
+      .cave-home {
+        position: relative;
+        flex-shrink: 0;
+        overflow: visible;
+      }
+
+      .cave {
+        display: block;
+        overflow: visible;
+        cursor: pointer;
+        color: rgba(0, 0, 0, 0.4);
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .cave:focus,
+      .cave:focus-visible,
+      .shark:focus,
+      .shark:focus-visible {
+        outline: none;
+      }
+
+      .cave:hover {
+        color: rgba(0, 0, 0, 0.55);
       }
 
       .shark {
@@ -355,7 +411,22 @@
         margin: 0;
         overflow: visible;
         pointer-events: none;
-        will-change: transform;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .shark.sleeping {
+        pointer-events: auto;
+        cursor: pointer;
+      }
+
+      .shark.docked {
+        position: absolute;
+        left: 50%;
+        top: 68%;
+        z-index: 2;
+        pointer-events: auto;
+        cursor: pointer;
       }
 
       .shark .eye {
@@ -473,11 +544,9 @@
       @keyframes staggerIn {
         0% {
           opacity: 0;
-          transform: translateY(8px);
         }
         100% {
           opacity: 1;
-          transform: none;
         }
       }
 
@@ -512,7 +581,17 @@
         animation-delay: 0.45s;
       }
       html:not(.visited) .site-footer {
-        animation-delay: 0.55s;
+        animation-name: staggerInFade;
+        animation-delay: 0.6s;
+      }
+
+      @keyframes staggerInFade {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
       }
 
       @media screen and (max-width: 768px) {
@@ -541,8 +620,11 @@
       <div class="homepage">
         <article class="article">
           <header>
-            <h1 id="site-name" aria-label="Leo S. Feng">Leo S. Feng</h1>
-            <time datetime="2026-09-19">Updated Sep 19, 2026</time>
+            <div class="header-top">
+              <h1 id="site-name" aria-label="Leo S. Feng">Leo S. Feng</h1>
+              <p class="fish-counter" id="fish-counter" hidden></p>
+            </div>
+            <time datetime="2026-09-20">Updated Sep 20, 2026</time>
           </header>
           <p>
             I study Operations Research and Financial Engineering at
@@ -564,6 +646,9 @@
             <a class="basic-link" href="https://www.linkedin.com/in/fengl1" target="_blank" rel="noopener noreferrer">LinkedIn</a>,
             or reach me via
             <a class="basic-link" href="mailto:lf4670@princeton.edu">email</a>.
+          </p>
+          <p>
+            <a class="basic-link" href="courses.html">Coursework</a>
           </p>
         </article>
 
@@ -607,82 +692,134 @@
 
         <footer class="site-footer">
           <div class="inner">
-            <p>
-              <span id="clock"></span> in Princeton, New Jersey
+            <div class="footer-row">
+              <p>
+                <span id="clock"></span> in Princeton, New Jersey
+              </p>
+              <div class="cave-home" id="cave-home">
               <svg
-                class="shark"
-                id="shark"
-                width="40"
-                height="26"
-                viewBox="0 0 42 26"
+                class="cave"
+                id="cave"
+                width="72"
+                height="48"
+                viewBox="0 0 72 48"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
+                role="button"
+                tabindex="0"
+                aria-label="Send the shark back to sleep"
               >
-                <g class="pose">
-                  <path
-                    fill="none"
-                    stroke="rgba(0, 0, 0, 0.4)"
-                    stroke-width="1.85"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M1.5 7.1
-                       C3.9 8.05 6.7 10.35 9.05 11.85
-                       C12.55 10.55 16.85 10.15 20.05 10.55
-                       C20.55 6.2 21.05 3.85 21.55 3.35
-                       C22.1 2.85 22.8 3.2 23.15 3.85
-                       C24.05 6.35 24.95 9.35 25.55 10.55
-                       C29.15 10.35 32.85 11.15 35.55 12.75
-                       C37.15 13.7 38.7 14.65 39.9 15.2
-                       C40.2 15.35 40.15 15.7 39.8 15.8
-                       C38.05 16.35 36.75 16.8 36.5 17.3
-                       C36.3 17.7 36.8 18 37.4 17.9
-                       C35.35 18.95 32.75 19.65 29.95 19.85
-                       C28.35 21.25 26.45 22.75 25.15 23.25
-                       C24.7 23.45 24.35 23.1 24.4 22.65
-                       C24.65 21.3 24.95 20.3 25.25 19.75
-                       C22.95 19.95 20.45 19.7 18.25 19.1
-                       C17.55 19.95 16.8 20.65 16.35 20.85
-                       C16.05 21 15.75 20.7 15.9 20.3
-                       C16.25 19.45 16.6 18.85 16.9 18.55
-                       C14.35 17.8 12.05 16.75 10.2 15.55
-                       C7.45 17.45 4.45 19.65 1.7 20.7
-                       C3.85 18.35 6.15 15.85 7.85 14.4
-                       C5.7 12.4 3.5 9.55 1.5 7.1
-                       Z"
-                  />
-                  <circle
-                    class="eye"
-                    cx="32.9"
-                    cy="13.35"
-                    r="1.2"
-                    fill="rgba(0, 0, 0, 0.4)"
-                  />
-                  <path
-                    class="eye-sleep"
-                    d="M31.2 13.35 H34.55"
-                    stroke="rgba(0, 0, 0, 0.4)"
-                    stroke-width="1.85"
-                    stroke-linecap="round"
-                  />
-                </g>
-                <g class="zzz" stroke="rgba(0, 0, 0, 0.4)" stroke-linecap="round" stroke-linejoin="round" fill="none">
-                  <g class="zzz-1" stroke-width="1.5">
-                    <path d="M34 2 L38 2 L34 6 L38 6" />
-                  </g>
-                  <g class="zzz-2" stroke-width="1.3">
-                    <path d="M36 0.5 L39 0.5 L36 3.5 L39 3.5" />
-                  </g>
-                  <g class="zzz-3" stroke-width="1.1">
-                    <path d="M38 -1 L40.5 -1 L38 1.5 L40.5 1.5" />
-                  </g>
-                </g>
+                <path
+                  d="M6 44C10 32 16 22 24 17C30 13.5 38 12.5 46 16C54 19.5 61 29 66 44"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M26 44C26 33 28.5 26 36 26C43.5 26 46 33 46 44"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M6 44H66"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M20 18.5C22 14 25.5 12.5 28 15.5"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M40 15C42.5 11 46.5 11.5 48.5 15.5"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                />
               </svg>
-            </p>
+              </div>
+            </div>
           </div>
         </footer>
       </div>
     </div>
+    <svg
+      class="shark sleeping"
+      id="shark"
+      width="40"
+      height="26"
+      viewBox="0 0 42 26"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      role="button"
+      tabindex="0"
+      aria-label="Wake the shark"
+    >
+      <g class="pose">
+        <path
+          fill="none"
+          stroke="rgba(0, 0, 0, 0.4)"
+          stroke-width="1.85"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M1.5 7.1
+             C3.9 8.05 6.7 10.35 9.05 11.85
+             C12.55 10.55 16.85 10.15 20.05 10.55
+             C20.55 6.2 21.05 3.85 21.55 3.35
+             C22.1 2.85 22.8 3.2 23.15 3.85
+             C24.05 6.35 24.95 9.35 25.55 10.55
+             C29.15 10.35 32.85 11.15 35.55 12.75
+             C37.15 13.7 38.7 14.65 39.9 15.2
+             C40.2 15.35 40.15 15.7 39.8 15.8
+             C38.05 16.35 36.75 16.8 36.5 17.3
+             C36.3 17.7 36.8 18 37.4 17.9
+             C35.35 18.95 32.75 19.65 29.95 19.85
+             C28.35 21.25 26.45 22.75 25.15 23.25
+             C24.7 23.45 24.35 23.1 24.4 22.65
+             C24.65 21.3 24.95 20.3 25.25 19.75
+             C22.95 19.95 20.45 19.7 18.25 19.1
+             C17.55 19.95 16.8 20.65 16.35 20.85
+             C16.05 21 15.75 20.7 15.9 20.3
+             C16.25 19.45 16.6 18.85 16.9 18.55
+             C14.35 17.8 12.05 16.75 10.2 15.55
+             C7.45 17.45 4.45 19.65 1.7 20.7
+             C3.85 18.35 6.15 15.85 7.85 14.4
+             C5.7 12.4 3.5 9.55 1.5 7.1
+             Z"
+        />
+        <circle
+          class="eye"
+          cx="32.9"
+          cy="13.35"
+          r="1.2"
+          fill="rgba(0, 0, 0, 0.4)"
+        />
+        <path
+          class="eye-sleep"
+          d="M31.2 13.35 H34.55"
+          stroke="rgba(0, 0, 0, 0.4)"
+          stroke-width="1.85"
+          stroke-linecap="round"
+        />
+      </g>
+      <g class="zzz" stroke="rgba(0, 0, 0, 0.4)" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <g class="zzz-1" stroke-width="1.5">
+          <path d="M34 2 L38 2 L34 6 L38 6" />
+        </g>
+        <g class="zzz-2" stroke-width="1.3">
+          <path d="M36 0.5 L39 0.5 L36 3.5 L39 3.5" />
+        </g>
+        <g class="zzz-3" stroke-width="1.1">
+          <path d="M38 -1 L40.5 -1 L38 1.5 L40.5 1.5" />
+        </g>
+      </g>
+    </svg>
+    <script src="fish-counter.js"></script>
     <script>
       if (sessionStorage.getItem("leo-home-visited")) {
         document.documentElement.classList.add("visited");
@@ -778,7 +915,6 @@
         let hours = now.getHours();
         const minutes = pad(now.getMinutes());
         const meridiem = hours >= 12 ? "pm" : "am";
-        shark.classList.toggle("sleeping", hours >= 22 || hours < 7);
         hours = hours % 12 || 12;
         clock.textContent = hours + ":" + minutes + meridiem;
       }
@@ -790,7 +926,8 @@
         const reduceMotion = window.matchMedia(
           "(prefers-reduced-motion: reduce)"
         ).matches;
-        if (reduceMotion) return;
+        const cave = document.getElementById("cave");
+        const caveHome = document.getElementById("cave-home");
 
         let x = 0;
         let y = 0;
@@ -798,7 +935,9 @@
         let tx = 0;
         let ty = 0;
         let ready = false;
+        let awake = false;
         let following = false;
+        let docked = false;
 
         const prey = [];
         const bites = [];
@@ -807,14 +946,14 @@
         let chompUntil = 0;
 
         function restPoint() {
-          const line = document.querySelector(".site-footer p");
-          if (!line) {
-            return { x: window.innerWidth - 48, y: window.innerHeight - 64 };
+          const el = caveHome || cave;
+          if (!el) {
+            return { x: window.innerWidth - 56, y: window.innerHeight - 56 };
           }
-          const box = line.getBoundingClientRect();
+          const box = el.getBoundingClientRect();
           return {
-            x: Math.min(box.right + 28, window.innerWidth - 28),
-            y: box.top + box.height / 2
+            x: box.left + box.width * 0.5,
+            y: box.top + box.height * 0.68
           };
         }
 
@@ -825,7 +964,51 @@
           if (!ready) {
             x = tx;
             y = ty;
+            angle = 0;
             ready = true;
+          }
+        }
+
+        function dockShark() {
+          if (docked || !caveHome) return;
+          docked = true;
+          shark.classList.add("docked", "sleeping");
+          shark.style.left = "";
+          shark.style.top = "";
+          shark.style.transform = "translate(-50%, -50%)";
+          caveHome.appendChild(shark);
+        }
+
+        function undockShark() {
+          if (!docked) return;
+          const box = shark.getBoundingClientRect();
+          x = box.left + box.width / 2;
+          y = box.top + box.height / 2;
+          angle = 0;
+          docked = false;
+          shark.classList.remove("docked");
+          document.body.appendChild(shark);
+          shark.style.left = x + "px";
+          shark.style.top = y + "px";
+        }
+
+        function sleepShark() {
+          awake = false;
+          following = false;
+          shark.classList.add("sleeping");
+          shark.setAttribute("aria-label", "Wake the shark");
+          goHome();
+        }
+
+        function wakeShark(clientX, clientY) {
+          undockShark();
+          awake = true;
+          following = true;
+          shark.classList.remove("sleeping");
+          shark.setAttribute("aria-label", "Shark");
+          if (typeof clientX === "number" && typeof clientY === "number") {
+            tx = clientX;
+            ty = clientY;
           }
         }
 
@@ -891,80 +1074,123 @@
         }
 
         goHome();
+        sleepShark();
+        dockShark();
+
         window.addEventListener("resize", function () {
-          if (!following) goHome();
+          if (!awake) goHome();
         });
 
         window.addEventListener(
           "pointermove",
           function (event) {
+            if (!awake) return;
             following = true;
             tx = event.clientX;
             ty = event.clientY;
           },
-          { passive: true }
+          { passive: true, capture: true }
         );
 
-        window.addEventListener("blur", function () {
-          following = false;
+        shark.addEventListener("click", function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          shark.blur();
+          if (!awake) wakeShark(event.clientX, event.clientY);
         });
+
+        shark.addEventListener("keydown", function (event) {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            if (!awake) wakeShark();
+          }
+        });
+
+        if (cave) {
+          cave.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            cave.blur();
+            sleepShark();
+          });
+
+          cave.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              sleepShark();
+            }
+          });
+        }
 
         spawnPrey();
         setInterval(spawnPrey, 10000);
 
         function frame(now) {
-          if (!following) {
-            const home = restPoint();
-            tx = home.x;
-            ty = home.y;
-          }
+          if (!docked) {
+            if (!awake) {
+              const home = restPoint();
+              tx = home.x;
+              ty = home.y;
+            }
 
-          const trail = 28;
-          const followX = tx - Math.cos(angle) * trail;
-          const followY = ty - Math.sin(angle) * trail;
-          const fx = followX - x;
-          const fy = followY - y;
-          x += fx * 0.16;
-          y += fy * 0.16;
+            const trail = awake ? 28 : 0;
+            const followX = tx - Math.cos(angle) * trail;
+            const followY = ty - Math.sin(angle) * trail;
+            const fx = followX - x;
+            const fy = followY - y;
+            const ease = awake ? 0.16 : 0.18;
+            x += fx * ease;
+            y += fy * ease;
 
-          const speed = Math.hypot(fx, fy);
-          if (speed > 0.25) {
-            const next = Math.atan2(ty - y, tx - x);
-            let diff = next - angle;
-            while (diff > Math.PI) diff -= Math.PI * 2;
-            while (diff < -Math.PI) diff += Math.PI * 2;
-            angle += diff * 0.22;
-          }
-
-          const wiggle = Math.sin(now / 160) * Math.min(speed, 10) * 0.35;
-          const deg = (angle * 180) / Math.PI + wiggle;
-          const flip = Math.cos(angle) < 0;
-          let chompX = 1;
-          let chompY = 1;
-          if (now < chompUntil) {
-            const p = 1 - (chompUntil - now) / 320;
-            if (p < 0.4) {
-              chompX = 1.22;
-              chompY = 0.86;
+            if (!awake && Math.hypot(fx, fy) < 2.5) {
+              dockShark();
             } else {
-              const q = (p - 0.4) / 0.6;
-              chompX = 1.22 + (1 - 1.22) * q;
-              chompY = 0.86 + (1 - 0.86) * q;
+              const speed = Math.hypot(fx, fy);
+              if (awake && speed > 0.25) {
+                const next = Math.atan2(ty - y, tx - x);
+                let diff = next - angle;
+                while (diff > Math.PI) diff -= Math.PI * 2;
+                while (diff < -Math.PI) diff += Math.PI * 2;
+                angle += diff * 0.22;
+              } else if (!awake) {
+                let diff = 0 - angle;
+                while (diff > Math.PI) diff -= Math.PI * 2;
+                while (diff < -Math.PI) diff += Math.PI * 2;
+                angle += diff * 0.12;
+              }
+
+              const wiggle =
+                awake && !reduceMotion
+                  ? Math.sin(now / 160) * Math.min(speed, 10) * 0.35
+                  : 0;
+              const deg = (angle * 180) / Math.PI + wiggle;
+              const flip = Math.cos(angle) < 0;
+              let chompX = 1;
+              let chompY = 1;
+              if (awake && now < chompUntil) {
+                const p = 1 - (chompUntil - now) / 320;
+                if (p < 0.4) {
+                  chompX = 1.22;
+                  chompY = 0.86;
+                } else {
+                  const q = (p - 0.4) / 0.6;
+                  chompX = 1.22 + (1 - 1.22) * q;
+                  chompY = 0.86 + (1 - 0.86) * q;
+                }
+              }
+
+              shark.style.left = x + "px";
+              shark.style.top = y + "px";
+              shark.style.transform =
+                "translate(-50%, -50%) rotate(" +
+                deg +
+                "deg) scaleY(" +
+                (flip ? -chompY : chompY) +
+                ") scaleX(" +
+                chompX +
+                ")";
             }
           }
-
-          shark.style.transform =
-            "translate(" +
-            x +
-            "px, " +
-            y +
-            "px) translate(-50%, -50%) rotate(" +
-            deg +
-            "deg) scaleY(" +
-            (flip ? -chompY : chompY) +
-            ") scaleX(" +
-            chompX +
-            ")";
 
           for (let i = prey.length - 1; i >= 0; i--) {
             const fish = prey[i];
@@ -988,10 +1214,11 @@
               fish.opacity = Math.min(1, (now - fish.born) / 280);
               fish.scale += (1 - fish.scale) * 0.12;
 
-              if (Math.hypot(fish.x - x, fish.y - y) < eatRadius) {
+              if (awake && Math.hypot(fish.x - x, fish.y - y) < eatRadius) {
                 fish.eaten = true;
                 chompUntil = now + 320;
                 spawnBite(fish.x, fish.y);
+                if (window.LeoFish) window.LeoFish.add();
               }
             } else {
               fish.x += (x - fish.x) * 0.5;
