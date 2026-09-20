@@ -410,7 +410,9 @@
         z-index: 20;
         margin: 0;
         overflow: visible;
-        pointer-events: none;
+        pointer-events: auto;
+        touch-action: none;
+        cursor: pointer;
         outline: none;
         -webkit-tap-highlight-color: transparent;
       }
@@ -940,6 +942,8 @@
         let docked = false;
         let hunt = null;
         let tapStart = null;
+        let dragging = false;
+        let touchMode = null;
 
         const prey = [];
         const bites = [];
@@ -998,6 +1002,9 @@
           awake = false;
           following = false;
           hunt = null;
+          dragging = false;
+          touchMode = null;
+          tapStart = null;
           shark.classList.add("sleeping");
           shark.setAttribute("aria-label", "Wake the shark");
           goHome();
@@ -1088,17 +1095,58 @@
           "pointermove",
           function (event) {
             if (!awake) return;
-            if (event.pointerType === "touch") return;
-            following = true;
-            hunt = null;
+
+            if (event.pointerType !== "touch" && event.pointerType !== "pen") {
+              following = true;
+              hunt = null;
+              dragging = false;
+              tx = event.clientX;
+              ty = event.clientY;
+              return;
+            }
+
+            if (!tapStart || event.pointerId !== tapStart.id) return;
+
+            const dx = event.clientX - tapStart.x;
+            const dy = event.clientY - tapStart.y;
+            const dist = Math.hypot(dx, dy);
+
+            if (!touchMode) {
+              if (dist < 12 && !tapStart.onShark) return;
+              if (tapStart.ignore) {
+                touchMode = "scroll";
+                return;
+              }
+              if (!tapStart.onShark && Math.abs(dy) > Math.abs(dx) * 1.15) {
+                touchMode = "scroll";
+                return;
+              }
+              touchMode = "drag";
+              dragging = true;
+              hunt = null;
+              following = true;
+            }
+
+            if (touchMode !== "drag") return;
+
+            event.preventDefault();
+            if (tapStart.lastX != null) {
+              const mx = event.clientX - tapStart.lastX;
+              const my = event.clientY - tapStart.lastY;
+              if (Math.hypot(mx, my) > 0.8) angle = Math.atan2(my, mx);
+            }
+            tapStart.lastX = event.clientX;
+            tapStart.lastY = event.clientY;
             tx = event.clientX;
             ty = event.clientY;
+            x = event.clientX;
+            y = event.clientY;
           },
-          { passive: true, capture: true }
+          { capture: true, passive: false }
         );
 
         function ignoreTapTarget(target) {
-          return !!(target && target.closest && target.closest("a, button, input, textarea, select, .cave, .shark"));
+          return !!(target && target.closest && target.closest("a, button, input, textarea, select, .cave"));
         }
 
         function sendSharkTo(clientX, clientY) {
@@ -1130,9 +1178,35 @@
           "pointerdown",
           function (event) {
             if (event.pointerType !== "touch" && event.pointerType !== "pen") return;
-            tapStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+            const onShark = !!(event.target.closest && event.target.closest(".shark"));
+            tapStart = {
+              x: event.clientX,
+              y: event.clientY,
+              id: event.pointerId,
+              onShark: onShark,
+              ignore: !onShark && ignoreTapTarget(event.target),
+              lastX: event.clientX,
+              lastY: event.clientY
+            };
+            touchMode = null;
+            dragging = false;
+            if (!awake || tapStart.ignore) return;
+            if (onShark) {
+              touchMode = "drag";
+              dragging = true;
+              hunt = null;
+              following = true;
+              tx = event.clientX;
+              ty = event.clientY;
+              x = event.clientX;
+              y = event.clientY;
+              event.preventDefault();
+              try {
+                shark.setPointerCapture(event.pointerId);
+              } catch (err) {}
+            }
           },
-          { passive: true, capture: true }
+          { capture: true, passive: false }
         );
 
         window.addEventListener(
@@ -1141,10 +1215,13 @@
             if (!tapStart || event.pointerId !== tapStart.id) return;
             const dx = event.clientX - tapStart.x;
             const dy = event.clientY - tapStart.y;
+            const wasTap = !touchMode && Math.hypot(dx, dy) <= 12;
+            const ignore = tapStart.ignore;
             tapStart = null;
+            dragging = false;
+            touchMode = null;
             if (!awake) return;
-            if (Math.hypot(dx, dy) > 12) return;
-            if (ignoreTapTarget(event.target)) return;
+            if (!wasTap || ignore) return;
             sendSharkTo(event.clientX, event.clientY);
           },
           { capture: true }
@@ -1154,6 +1231,8 @@
           "pointercancel",
           function () {
             tapStart = null;
+            dragging = false;
+            touchMode = null;
           },
           { capture: true }
         );
@@ -1197,6 +1276,8 @@
               const home = restPoint();
               tx = home.x;
               ty = home.y;
+            } else if (dragging) {
+              hunt = null;
             } else if (hunt) {
               if (hunt.eaten) {
                 hunt = null;
@@ -1206,12 +1287,12 @@
               }
             }
 
-            const trail = awake ? 28 : 0;
+            const trail = awake && !dragging ? 28 : 0;
             const followX = tx - Math.cos(angle) * trail;
             const followY = ty - Math.sin(angle) * trail;
             const fx = followX - x;
             const fy = followY - y;
-            const ease = awake ? 0.16 : 0.18;
+            const ease = dragging ? 1 : awake ? 0.16 : 0.18;
             x += fx * ease;
             y += fy * ease;
 
@@ -1233,7 +1314,7 @@
               }
 
               const wiggle =
-                awake && !reduceMotion
+                awake && !dragging && !reduceMotion
                   ? Math.sin(now / 160) * Math.min(speed, 10) * 0.35
                   : 0;
               const deg = (angle * 180) / Math.PI + wiggle;
