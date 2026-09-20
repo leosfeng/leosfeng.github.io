@@ -256,7 +256,7 @@
       .work a {
         position: relative;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
         gap: 1rem;
         padding: 0.735rem 0 0.735rem 6.75rem;
@@ -277,20 +277,28 @@
 
       .work a h2 {
         display: inline-flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 0.625rem;
+        min-width: 0;
+        flex: 1;
         color: #111;
         font-size: 0.875rem;
         font-weight: 460;
         letter-spacing: -0.00563rem;
-        line-height: normal;
+        line-height: 1.25rem;
         transition: opacity 0.14s ease;
+      }
+
+      .work a h2 .rustle-wrap {
+        min-width: 0;
       }
 
       .work a h2::after {
         content: "";
+        flex-shrink: 0;
         width: 0.35rem;
         height: 0.35rem;
+        margin-top: 0.45rem;
         border-top: 1.15px solid currentColor;
         border-right: 1.15px solid currentColor;
         transform: rotate(45deg);
@@ -303,10 +311,12 @@
       }
 
       .work time {
+        flex-shrink: 0;
+        white-space: nowrap;
         color: var(--muted);
         font-size: 0.875rem;
         font-weight: 460;
-        line-height: normal;
+        line-height: 1.25rem;
         letter-spacing: -0.00563rem;
         font-variant-numeric: tabular-nums;
       }
@@ -441,6 +451,52 @@
         }
         50% {
           transform: rotate(2.4deg);
+        }
+      }
+
+      .kelp.is-rustling {
+        animation: kelpRustle 0.4s ease-in-out;
+      }
+
+      @keyframes kelpRustle {
+        0%,
+        100% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(-5deg);
+        }
+        55% {
+          transform: rotate(4deg);
+        }
+        80% {
+          transform: rotate(-2deg);
+        }
+      }
+
+      .rustle-word {
+        white-space: nowrap;
+      }
+
+      .rustle-ch {
+        display: inline-block;
+        transform-origin: 50% 80%;
+      }
+
+      .rustle-ch.is-rustling {
+        animation: wordRipple 0.32s ease-in-out;
+      }
+
+      @keyframes wordRipple {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        30% {
+          transform: translate(0.4px, -0.6px) rotate(-2deg);
+        }
+        65% {
+          transform: translate(-0.4px, 0.4px) rotate(2deg);
         }
       }
 
@@ -742,7 +798,7 @@
                 </li>
                 <li>
                   <a href="https://www.mskcc.org/research-areas/labs/jian-carrot-zhang" target="_blank" rel="noopener noreferrer">
-                    <h2>Memorial Sloan Kettering Cancer Center (Carrot-Zhang Lab)</h2>
+                    <h2>Memorial Sloan Kettering Cancer Center<br />(Carrot-Zhang Lab)</h2>
                     <time datetime="2026-06-12">
                       <span>06/12</span><span>/</span><span>2026</span>
                     </time>
@@ -1497,6 +1553,123 @@
         spawnPrey();
         setInterval(spawnPrey, 10000);
 
+        function wrapRustleLetters(root) {
+          let target = root;
+          if (root.matches("h2")) {
+            const wrap = document.createElement("span");
+            wrap.className = "rustle-wrap";
+            while (root.firstChild) wrap.appendChild(root.firstChild);
+            root.appendChild(wrap);
+            target = wrap;
+          }
+          const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT, {
+            acceptNode: function (node) {
+              if (!node.nodeValue) return NodeFilter.FILTER_REJECT;
+              if (
+                node.parentElement.closest(
+                  "#clock, .name-glyph, svg, .rustle-ch, time"
+                )
+              ) {
+                return NodeFilter.FILTER_REJECT;
+              }
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          });
+          const nodes = [];
+          while (walker.nextNode()) nodes.push(walker.currentNode);
+          nodes.forEach(function (textNode) {
+            const text = textNode.nodeValue;
+            const frag = document.createDocumentFragment();
+            const parts = text.split(/(\s+)/);
+            for (let p = 0; p < parts.length; p++) {
+              const part = parts[p];
+              if (!part) continue;
+              if (/^\s+$/.test(part)) {
+                frag.appendChild(document.createTextNode(part));
+                continue;
+              }
+              const word = document.createElement("span");
+              word.className = "rustle-word";
+              for (let i = 0; i < part.length; i++) {
+                const span = document.createElement("span");
+                span.className = "rustle-ch";
+                span.textContent = part.charAt(i);
+                word.appendChild(span);
+              }
+              frag.appendChild(word);
+            }
+            textNode.parentNode.replaceChild(frag, textNode);
+          });
+        }
+
+        document
+          .querySelectorAll(".article p, .work a h2, .work h3, .site-footer p")
+          .forEach(wrapRustleLetters);
+
+        const rustleKelp = Array.prototype.slice.call(
+          document.querySelectorAll(".kelp")
+        );
+        const rustleGroups = Array.prototype.slice
+          .call(
+            document.querySelectorAll(
+              ".article p, .work a h2, .work h3, .site-footer p"
+            )
+          )
+          .map(function (el) {
+            return {
+              el: el,
+              chars: Array.prototype.slice.call(el.querySelectorAll(".rustle-ch"))
+            };
+          });
+
+        function boxesOverlap(a, b) {
+          return !(
+            a.right < b.left ||
+            a.left > b.right ||
+            a.bottom < b.top ||
+            a.top > b.bottom
+          );
+        }
+
+        function rustle(el) {
+          if (el.classList.contains("is-rustling")) return;
+          el.classList.add("is-rustling");
+        }
+
+        document.addEventListener("animationend", function (event) {
+          if (
+            event.animationName === "wordRipple" ||
+            event.animationName === "kelpRustle"
+          ) {
+            event.target.classList.remove("is-rustling");
+          }
+        });
+
+        function rustleNearby() {
+          if (reduceMotion) return;
+          const box = shark.getBoundingClientRect();
+          const zone = {
+            left: box.left - 4,
+            right: box.right + 4,
+            top: box.top - 2,
+            bottom: box.bottom + 2
+          };
+          for (let i = 0; i < rustleKelp.length; i++) {
+            if (boxesOverlap(zone, rustleKelp[i].getBoundingClientRect())) {
+              rustle(rustleKelp[i]);
+            }
+          }
+          for (let g = 0; g < rustleGroups.length; g++) {
+            const group = rustleGroups[g];
+            if (!boxesOverlap(zone, group.el.getBoundingClientRect())) continue;
+            for (let i = 0; i < group.chars.length; i++) {
+              if (boxesOverlap(zone, group.chars[i].getBoundingClientRect())) {
+                rustle(group.chars[i]);
+              }
+            }
+          }
+        }
+
         function frame(now) {
           if (!docked) {
             if (!awake) {
@@ -1653,6 +1826,8 @@
               pop.scale +
               ")";
           }
+
+          rustleNearby();
 
           requestAnimationFrame(frame);
         }
