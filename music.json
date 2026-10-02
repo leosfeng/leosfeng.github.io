@@ -1,0 +1,93 @@
+{
+  "month": "September 2026",
+  "playlist": "",
+  "songs": [
+    {
+      "title": "Instant Crush",
+      "artist": "Daft Punk",
+      "url": "https://music.apple.com/us/album/instant-crush/617154241?i=617154362",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg/200x200bb.jpg"
+    },
+    {
+      "title": "DIE TRYING",
+      "artist": "PARTYNEXTDOOR, Drake & Yebba",
+      "url": "https://music.apple.com/us/album/die-trying/1796475285?i=1796475570",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/23/7c/a2/237ca270-9926-4b78-be81-410b6fc85f47/50291.jpg/200x200bb.jpg"
+    },
+    {
+      "title": "SEEIN' STARS",
+      "artist": "Turnstile",
+      "url": "https://music.apple.com/us/album/seein-stars/1805820903?i=1805821602",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/d1/1c/28/d11c28a8-0e83-41c3-afc7-b873dd7be188/075679614896.jpg/200x200bb.jpg"
+    },
+    {
+      "title": "GONE FISHING",
+      "artist": "Denzel Curry & Kenny Beats",
+      "url": "https://music.apple.com/us/album/gone-fishing/6788465743?i=6788465761",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/dc/52/07/dc5207bf-496b-4912-58d6-3aabb83b9c88/26CRGIM53902.rgb.jpg/200x200bb.jpg"
+    },
+    {
+      "title": "DIFFERENCE (feat. Yebba)",
+      "artist": "Denzel Curry & Kenny Beats",
+      "url": "https://music.apple.com/us/album/difference-feat-yebba/6788465743?i=6788466287",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/dc/52/07/dc5207bf-496b-4912-58d6-3aabb83b9c88/26CRGIM53902.rgb.jpg/200x200bb.jpg"
+    },
+    {
+      "title": "X-Wing",
+      "artist": "Denzel Curry",
+      "url": "https://music.apple.com/us/album/x-wing/1613566792?i=1613567082",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/7d/ab/50/7dab50b7-b508-124b-69d0-1fd0b6699032/21CRGIM30671.rgb.jpg/200x200bb.jpg"
+    },
+    {
+      "title": "Starting Over",
+      "artist": "LSD and the Search for God",
+      "url": "https://music.apple.com/us/album/starting-over/6795216520?i=6795218586",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/6a/af/24/6aaf249c-98ce-f1c2-faf4-a8a0eff35e9f/688981076421.jpg/200x200bb.jpg"
+    },
+    {
+      "title": "Fragments of Time",
+      "artist": "Daft Punk",
+      "url": "https://music.apple.com/us/album/fragments-of-time/617154241?i=617154569",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg/200x200bb.jpg"
+    },
+    {
+      "title": "closer 2 u",
+      "artist": "taka",
+      "url": "https://music.apple.com/us/album/closer-2-u/6784997479?i=6784997483",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/51/bd/12/51bd1221-51a3-8207-001a-51f358e31cc2/artwork.jpg/200x200bb.jpg"
+    },
+    {
+      "title": "Cherry-Coloured Funk",
+      "artist": "Cocteau Twins",
+      "url": "https://music.apple.com/us/album/cherry-coloured-funk/258198881?i=258198956",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/76/cd/61/76cd61e7-0714-dce5-c48e-0f05f8fcb84b/652637001280.png/200x200bb.jpg"
+    }
+  ],
+  "artists": [
+    {
+      "name": "Denzel Curry",
+      "url": "https://music.apple.com/us/artist/denzel-curry/631440154",
+      "cover": "artists/denzel-curry.jpg"
+    },
+    {
+      "name": "Daft Punk",
+      "url": "https://music.apple.com/us/artist/daft-punk/5468295",
+      "cover": "artists/daft-punk.jpg"
+    },
+    {
+      "name": "Tory Lanez",
+      "url": "https://music.apple.com/us/artist/tory-lanez/440458549",
+      "cover": "artists/tory-lanez.jpg"
+    },
+    {
+      "name": "Magdalena Bay",
+      "url": "https://music.apple.com/us/artist/magdalena-bay/1119954914",
+      "cover": "artists/magdalena-bay.jpg"
+    },
+    {
+      "name": "Cocteau Twins",
+      "url": "https://music.apple.com/us/artist/cocteau-twins/3029779",
+      "cover": "artists/cocteau-twins.jpg"
+    }
+  ]
+}

@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Courses — Leo S. Feng</title>
+    <title>Music — Leo S. Feng</title>
     <meta
       name="description"
-      content="Coursework at Princeton."
+      content="This month on Apple Music."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400..600;1,400..600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400..600;1,400..600&family=Newsreader:ital,opsz,wght@1,6..72,400..500&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml" />
@@ -23,6 +23,7 @@
         --rule: #f2f2f2;
         --font: "Figtree", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           sans-serif;
+        --serif: "Newsreader", Georgia, serif;
       }
 
       *,
@@ -58,9 +59,9 @@
 
       .page {
         position: relative;
+        z-index: 1;
         max-width: 36.375rem;
         margin: 0 auto;
-        z-index: 1;
         padding: 1.25rem 1rem 2.5rem;
       }
 
@@ -89,171 +90,6 @@
           hsla(0, 0%, 100%, 0.002) 98.2%,
           hsla(0, 0%, 100%, 0)
         );
-      }
-
-      .article > header {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-        padding: 0 0 0.5rem;
-      }
-
-      .article > header h1,
-      .article > header p {
-        font-size: 0.875rem;
-        line-height: 1.25rem;
-        letter-spacing: -0.00563rem;
-      }
-
-      .article > header h1 {
-        color: #111;
-        font-weight: 500;
-        white-space: nowrap;
-      }
-
-      .article > header h1 a {
-        transition: opacity 0.14s ease;
-      }
-
-      .article > header h1 a:hover {
-        opacity: 0.45;
-      }
-
-      .article > header p {
-        color: var(--muted);
-        font-weight: 460;
-      }
-
-      .header-top {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 1rem;
-      }
-
-      .fish-counter {
-        margin: 0;
-        color: var(--muted);
-        font-size: 0.875rem;
-        font-weight: 460;
-        letter-spacing: -0.00563rem;
-        font-variant-numeric: tabular-nums;
-        white-space: nowrap;
-      }
-
-      .fish-counter.is-in {
-        animation: fishIn 0.35s ease both;
-      }
-
-      @keyframes fishIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      .courses {
-        padding: 3rem 0 0;
-      }
-
-      .courses h3 {
-        color: var(--muted);
-        font-size: 0.875rem;
-        font-weight: 460;
-        letter-spacing: -0.00563rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid var(--rule);
-      }
-
-      .courses > ul {
-        display: flex;
-        flex-direction: column;
-        list-style: none;
-      }
-
-      .courses > ul > li {
-        border-bottom: 1px solid var(--rule);
-      }
-
-      .courses > ul > li:last-child {
-        border-bottom: none;
-      }
-
-      .courses > ul > li > ul {
-        display: flex;
-        flex-direction: column;
-        list-style: none;
-      }
-
-      .courses .course {
-        position: relative;
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 1rem;
-        padding: 0.735rem 0 0.735rem 7rem;
-      }
-
-      .courses .course::after {
-        content: "";
-        border-bottom: 1px solid var(--rule);
-        position: absolute;
-        bottom: 0;
-        left: 7rem;
-        right: 0;
-      }
-
-      .courses > ul > li > ul > li:last-child .course::after {
-        display: none;
-      }
-
-      .courses .course h2 {
-        color: #111;
-        font-size: 0.875rem;
-        font-weight: 460;
-        letter-spacing: -0.00563rem;
-        line-height: 1.25rem;
-      }
-
-      .courses .code {
-        flex-shrink: 0;
-        color: var(--muted);
-        font-size: 0.875rem;
-        font-weight: 460;
-        letter-spacing: -0.00563rem;
-        font-variant-numeric: tabular-nums;
-        white-space: nowrap;
-      }
-
-      .courses .term {
-        position: absolute;
-        left: 0;
-        top: 0.735rem;
-        color: var(--muted);
-        font-size: 0.875rem;
-        font-weight: 460;
-        letter-spacing: -0.00563rem;
-        white-space: nowrap;
-        display: none;
-      }
-
-      .courses > ul > li > ul > li:first-child .term {
-        display: block;
-      }
-
-      .site-footer {
-        padding: 2.5rem 0 5rem;
-      }
-
-      .site-footer .inner::before {
-        content: "";
-        display: block;
-        height: 1px;
-        width: 3.125rem;
-        background: #ededed;
-        margin: 0 0 2.375rem;
       }
 
       .water-surface {
@@ -366,23 +202,23 @@
       }
 
       .fish-a {
-        top: 22%;
+        top: 18%;
         width: 1.7rem;
-        animation: fishSwim 36s linear infinite;
+        animation: fishSwim 34s linear infinite;
       }
 
       .fish-b {
-        top: 48%;
+        top: 42%;
         width: 2.1rem;
-        animation: fishSwimRev 44s linear infinite;
-        animation-delay: -16s;
+        animation: fishSwimRev 42s linear infinite;
+        animation-delay: -14s;
       }
 
       .fish-c {
-        top: 71%;
+        top: 63%;
         width: 1.55rem;
-        animation: fishSwim 40s linear infinite;
-        animation-delay: -25s;
+        animation: fishSwim 38s linear infinite;
+        animation-delay: -22s;
       }
 
       @keyframes fishSwim {
@@ -412,7 +248,7 @@
       }
 
       .bubble:nth-child(1) {
-        left: 18%;
+        left: 12%;
         width: 6px;
         height: 6px;
         bottom: 8%;
@@ -420,7 +256,7 @@
       }
 
       .bubble:nth-child(2) {
-        left: 44%;
+        left: 38%;
         width: 4px;
         height: 4px;
         bottom: 4%;
@@ -429,7 +265,7 @@
       }
 
       .bubble:nth-child(3) {
-        left: 67%;
+        left: 71%;
         width: 7px;
         height: 7px;
         bottom: 12%;
@@ -438,7 +274,7 @@
       }
 
       .bubble:nth-child(4) {
-        left: 84%;
+        left: 88%;
         width: 5px;
         height: 5px;
         bottom: 2%;
@@ -458,6 +294,228 @@
           transform: translateY(-70vh);
           opacity: 0;
         }
+      }
+
+      .article > header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: 0 0 0.5rem;
+      }
+
+      .article > header h1,
+      .article > header p {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        letter-spacing: -0.00563rem;
+      }
+
+      .article > header h1 {
+        color: #111;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .article > header h1 a {
+        transition: opacity 0.14s ease;
+      }
+
+      .article > header h1 a:hover {
+        opacity: 0.45;
+      }
+
+      .article > header p {
+        color: var(--muted);
+        font-weight: 460;
+      }
+
+      .header-top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .fish-counter {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.875rem;
+        font-weight: 460;
+        letter-spacing: -0.00563rem;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      .fish-counter.is-in {
+        animation: fishIn 0.35s ease both;
+      }
+
+      @keyframes fishIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .music-intro {
+        padding-top: 1.65rem;
+        max-width: 32rem;
+        color: var(--body-color);
+        font-size: 0.875rem;
+        font-weight: 460;
+        line-height: 1.45rem;
+        letter-spacing: -0.00563rem;
+      }
+
+      .chart {
+        padding: 2.25rem 0 0;
+      }
+
+      .chart + .chart {
+        padding-top: 2.6rem;
+      }
+
+      .chart-title {
+        color: var(--muted);
+        font-size: 0.875rem;
+        font-weight: 460;
+        letter-spacing: -0.00563rem;
+        line-height: 1.25rem;
+        padding-bottom: 0.45rem;
+      }
+
+      .chart ul {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+      }
+
+      .chart .course {
+        position: relative;
+        display: flex;
+        align-items: baseline;
+        justify-content: flex-start;
+        gap: 0.85rem;
+        padding: 0.735rem 0 0.735rem 2.05rem;
+      }
+
+      .chart .course.has-cover {
+        align-items: center;
+        padding-top: 0.55rem;
+        padding-bottom: 0.55rem;
+      }
+
+      .chart .course::after {
+        content: "";
+        border-bottom: 1px solid var(--rule);
+        position: absolute;
+        bottom: 0;
+        left: 2.05rem;
+        right: 0;
+      }
+
+      .chart li:last-child .course::after {
+        display: none;
+      }
+
+      .rank {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1.55rem;
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 460;
+        letter-spacing: -0.00563rem;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .song-cover {
+        flex-shrink: 0;
+        width: 2.5rem;
+        height: 2.5rem;
+        object-fit: cover;
+        border-radius: 2px;
+        background: #ecece8;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+        transition: transform 0.2s ease;
+      }
+
+      .artist-cover {
+        border-radius: 50%;
+        object-position: center 18%;
+      }
+
+      .chart a.course:hover .song-cover {
+        transform: translateY(-1px) rotate(-4deg);
+      }
+
+      .chart a.course:hover .artist-cover {
+        transform: translateY(-1px) rotate(-3deg);
+      }
+
+      .chart .course h2 {
+        min-width: 0;
+        color: #111;
+        font-size: 0.875rem;
+        font-weight: 460;
+        letter-spacing: -0.00563rem;
+        line-height: 1.25rem;
+        transition: opacity 0.14s ease;
+      }
+
+      .chart .has-cover h2 {
+        flex: 1;
+        font-family: var(--serif);
+        font-size: 1.02rem;
+        font-style: italic;
+        font-weight: 430;
+        letter-spacing: 0.01rem;
+        line-height: 1.2;
+      }
+
+      .chart a.course:hover h2 {
+        opacity: 0.45;
+      }
+
+      .chart .code {
+        flex-shrink: 0;
+        max-width: 38%;
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 460;
+        letter-spacing: -0.00563rem;
+        text-align: right;
+      }
+
+      .music-embed {
+        padding-top: 2.5rem;
+      }
+
+      .music-embed iframe {
+        display: block;
+        width: 100%;
+        height: 28rem;
+        border: 0;
+        overflow: hidden;
+        background: transparent;
+      }
+
+      .site-footer {
+        padding: 2.5rem 0 2rem;
+      }
+
+      .site-footer .inner::before {
+        content: "";
+        display: block;
+        height: 1px;
+        width: 3.125rem;
+        background: #ededed;
+        margin: 0 0 2.375rem;
       }
 
       .ocean-floor {
@@ -516,15 +574,27 @@
         stroke: hsl(22, 62%, 50%);
       }
 
-      .grad-cap {
+      .treasure {
         fill: none;
-        stroke: hsl(230, 6%, 38%);
+        stroke: hsl(38, 48%, 42%);
         stroke-width: 1.4;
         stroke-linecap: round;
         stroke-linejoin: round;
       }
 
-      .grad-cap-fine {
+      .record-player {
+        fill: none;
+        stroke: rgba(0, 0, 0, 0.45);
+        stroke-width: 1.35;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .record-player .horn {
+        stroke: hsl(38, 48%, 42%);
+      }
+
+      .seafloor-fine {
         stroke-width: 1.1;
       }
 
@@ -549,6 +619,64 @@
         }
       }
 
+      .music-note-mark {
+        fill: none;
+        stroke: hsl(38, 48%, 42%);
+        stroke-width: 1.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .note {
+        animation: noteFloat 5.2s ease-in infinite;
+      }
+
+      .note-b {
+        animation-delay: -1.7s;
+      }
+
+      .note-c {
+        animation-delay: -3.4s;
+      }
+
+      @keyframes noteFloat {
+        0% {
+          transform: translate(0, 0);
+          opacity: 0;
+        }
+        18% {
+          opacity: 0.75;
+        }
+        100% {
+          transform: translate(-10px, -16px);
+          opacity: 0;
+        }
+      }
+
+      .vinyl-spin {
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: vinylSpin 2.4s linear infinite;
+      }
+
+      @keyframes vinylSpin {
+        0% {
+          transform: scaleY(0.42) rotate(0deg);
+        }
+        25% {
+          transform: scaleY(0.36) rotate(90deg);
+        }
+        50% {
+          transform: scaleY(0.45) rotate(180deg);
+        }
+        75% {
+          transform: scaleY(0.38) rotate(270deg);
+        }
+        100% {
+          transform: scaleY(0.42) rotate(360deg);
+        }
+      }
+
       @media (prefers-reduced-motion: reduce) {
         .kelp-a,
         .kelp-b,
@@ -557,7 +685,9 @@
         .boat,
         .boat-inner,
         .drift-fish,
-        .bubble {
+        .bubble,
+        .vinyl-spin,
+        .note {
           animation: none;
         }
       }
@@ -573,12 +703,8 @@
       }
 
       @media screen and (max-width: 520px) {
-        .courses .course {
-          padding-left: 5.75rem;
-        }
-
-        .courses .course::after {
-          left: 5.75rem;
+        .chart .code {
+          max-width: 34%;
         }
       }
     </style>
@@ -707,188 +833,18 @@
             <h1><a href="index.html">Leo S. Feng</a></h1>
             <p class="fish-counter" id="fish-counter" hidden></p>
           </div>
-          <p>Courses</p>
+          <p id="music-month">Music · September 2026</p>
         </header>
       </article>
 
-      <section class="courses">
-        <ul>
-          <li>
-            <ul>
-              <li>
-                <div class="course">
-                  <span class="term">Fall 2026</span>
-                  <h2>Microeconomic Theory: A Math Approach</h2>
-                  <span class="code">ECO 310</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Intro to Cellular &amp; Molecular Biology</h2>
-                  <span class="code">MOL 214</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Biochemistry</h2>
-                  <span class="code">MOL 345</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Projects in West African Mande Drumming</h2>
-                  <span class="code">MPP 259</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Independent Research Project</h2>
-                  <span class="code">ORF 375</span>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <ul>
-              <li>
-                <div class="course">
-                  <span class="term">Spring 2026</span>
-                  <h2>Organic Chemistry II: Foundations of Chemical Reactivity</h2>
-                  <span class="code">CHM 304</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Optimization</h2>
-                  <span class="code">ORF 307</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Introduction to Financial Mathematics</h2>
-                  <span class="code">ORF 335</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Introduction to Game Theory</h2>
-                  <span class="code">POL 250</span>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <ul>
-              <li>
-                <div class="course">
-                  <span class="term">Fall 2025</span>
-                  <h2>Intro to the History of Architecture</h2>
-                  <span class="code">ART 102</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Organic Chemistry I: Biological Emphasis</h2>
-                  <span class="code">CHM 301</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Algorithms and Data Structures</h2>
-                  <span class="code">COS 226</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Life on Earth</h2>
-                  <span class="code">EEB 211</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Probability and Stochastic Systems</h2>
-                  <span class="code">ORF 309</span>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <ul>
-              <li>
-                <div class="course">
-                  <span class="term">Summer 2025</span>
-                  <h2>Linear Algebra</h2>
-                  <span class="code">MAT 202</span>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <ul>
-              <li>
-                <div class="course">
-                  <span class="term">Spring 2025</span>
-                  <h2>Advanced General Chemistry: Honors Course</h2>
-                  <span class="code">CHM 215</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Computer Science: An Interdisciplinary Approach</h2>
-                  <span class="code">COS 126</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Multivariable Calculus</h2>
-                  <span class="code">MAT 201</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Fundamentals of Statistics</h2>
-                  <span class="code">ORF 245</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>General Physics II</h2>
-                  <span class="code">PHY 104</span>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <ul>
-              <li>
-                <div class="course">
-                  <span class="term">Fall 2024</span>
-                  <h2>Intensive Elementary Chinese</h2>
-                  <span class="code">CHI 103</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Sizing Up The Universe</h2>
-                  <span class="code">FRS 131</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>General Physics I</h2>
-                  <span class="code">PHY 103</span>
-                </div>
-              </li>
-              <li>
-                <div class="course">
-                  <h2>Writing Seminar</h2>
-                  <span class="code">WRI 170</span>
-                </div>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </section>
+      <p class="music-intro" id="music-intro">
+        I love music from all sorts of genres. Here are my most-listened songs
+        and artists of September 2026.
+      </p>
+
+      <div id="music-lists"></div>
+
+      <div class="music-embed" id="music-embed" hidden></div>
 
       <footer class="site-footer">
         <div class="inner">
@@ -900,18 +856,114 @@
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
             >
-              <g class="grad-cap" transform="translate(122 43) rotate(-8 17 40)">
-                <path d="M7.2 32C7.2 25.6 11.2 22.2 17 22.2C22.8 22.2 26.8 25.6 26.8 32" />
-                <path d="M7.2 32Q17 38.5 26.8 32" />
-                <path d="M17 10.5L35.5 18L17 25.4L-1.5 18Z" />
-                <path d="M-1.5 18L-1.5 19.8L17 27.2L35.5 19.8L35.5 18" />
-                <circle cx="17" cy="18" r="1.25" />
-                <path d="M18.2 18C26 16.8 32.5 17.5 34.4 24C35.2 28 34.2 34 33 40" />
-                <path d="M33 40L30.2 47.2" />
-                <path d="M33 40L32.8 48.2" />
-                <path d="M33 40L35.8 47.4" />
-                <path class="grad-cap-fine" d="M33 40L31.4 46.6" />
-                <path class="grad-cap-fine" d="M33 40L34.6 47.6" />
+              <g class="treasure" transform="translate(132 42) rotate(-16 26 44)">
+                <path d="M10 24Q26 7 42 22" />
+                <path d="M42 22L51 17Q35 2 16 12L10 24" />
+                <path d="M10 24H42" />
+                <path d="M10 24V44H42V24" />
+                <path d="M42 24L51 17V37L42 44" />
+                <path d="M10 33H42" />
+                <path d="M42 33L51 26" />
+                <rect x="23" y="21.5" width="10" height="9.5" rx="1.3" />
+                <path d="M26 21.5V16.5H30V21.5" />
+                <circle cx="28" cy="26.2" r="1.2" />
+              </g>
+              <g
+                class="record-player"
+                transform="translate(160 12) rotate(5 44 70)"
+              >
+                <path d="M30 55.4L68 53.2L70.4 56.8L28.6 59Z" />
+                <g transform="translate(39 54.4)">
+                  <g class="vinyl-spin">
+                    <circle cx="0" cy="0" r="13.2" />
+                    <circle class="seafloor-fine" cx="0" cy="0" r="10" />
+                    <circle class="seafloor-fine" cx="0" cy="0" r="6.8" />
+                    <circle cx="0" cy="0" r="2.4" />
+                    <path d="M-2.4 0A2.4 2.4 0 0 1 2.4 0" />
+                    <circle cx="0.95" cy="-0.7" r="0.5" />
+                  </g>
+                </g>
+                <ellipse class="horn" cx="56" cy="28" rx="3.6" ry="13" />
+                <ellipse class="horn" cx="56.9" cy="28" rx="1.9" ry="8.8" />
+                <path class="horn" d="M56 15C62 17.5 67 24 68.5 30.2" />
+                <path class="horn" d="M56 41C62 38.5 67 34 68.5 31.8" />
+                <ellipse class="horn" cx="68.6" cy="31" rx="2.1" ry="2.5" />
+                <path
+                  class="horn"
+                  d="M67.4 33.4C69.2 41 68.4 47.5 64.6 53.2"
+                  stroke-width="1.65"
+                />
+                <g transform="translate(50 12)">
+                  <g class="note note-a">
+                    <ellipse
+                      class="music-note-mark"
+                      cx="0"
+                      cy="5.2"
+                      rx="2.05"
+                      ry="1.35"
+                      transform="rotate(-20 0 5.2)"
+                    />
+                    <path class="music-note-mark" d="M1.7 4.8V-3.6" />
+                    <path class="music-note-mark" d="M1.7 -3.6C4.2 -2.2 4.3 0.2 1.7 0.8" />
+                  </g>
+                </g>
+                <g transform="translate(42 8)">
+                  <g class="note note-b">
+                    <ellipse
+                      class="music-note-mark"
+                      cx="0"
+                      cy="3.8"
+                      rx="1.55"
+                      ry="1.05"
+                      transform="rotate(-18 0 3.8)"
+                    />
+                    <path class="music-note-mark" d="M1.3 3.5V-2.6" />
+                    <path class="music-note-mark" d="M1.3 -2.6C3.2 -1.5 3.3 0.2 1.3 0.6" />
+                  </g>
+                </g>
+                <g transform="translate(58 6)">
+                  <g class="note note-c">
+                    <ellipse
+                      class="music-note-mark"
+                      cx="0"
+                      cy="4.4"
+                      rx="1.75"
+                      ry="1.15"
+                      transform="rotate(-16 0 4.4)"
+                    />
+                    <path class="music-note-mark" d="M1.45 4.1V-3" />
+                    <path class="music-note-mark" d="M1.45 -3C3.5 -1.8 3.6 0.1 1.45 0.7" />
+                  </g>
+                </g>
+                <path d="M64.6 49.4L47.2 53.8" />
+                <circle cx="64.6" cy="49.4" r="1.35" />
+                <path d="M47.2 53.8L45.4 54.6" />
+                <circle cx="45.4" cy="54.6" r="0.75" />
+                <path d="M32.6 58.6L62.6 56.8V73.6L32.6 75.4Z" />
+                <path d="M62.6 56.8L68.4 57V71.4L62.6 73.6" />
+                <path d="M30.8 75.4H64.2L68.4 73.4V76.4L30.8 78Z" />
+                <path class="seafloor-fine" d="M36.6 59V74.8" />
+                <path class="seafloor-fine" d="M40.6 58.8V74.6" />
+                <path class="seafloor-fine" d="M54.2 57.8V73.2" />
+                <path class="seafloor-fine" d="M58.2 57.6V73" />
+                <path d="M43.6 62.4Q51 59.6 58 62V68.4Q51 71.2 43.6 68.6Z" />
+                <path
+                  class="seafloor-fine"
+                  d="M45.6 63.8Q51 62.2 56.2 63.6V66.4Q51 68 45.6 66.4Z"
+                />
+                <path class="seafloor-fine" d="M51 64V66.2" />
+                <circle class="seafloor-fine" cx="39.6" cy="65.6" r="1" />
+                <circle class="seafloor-fine" cx="39.6" cy="68.4" r="0.6" />
+                <circle class="seafloor-fine" cx="37.6" cy="67" r="0.6" />
+                <circle class="seafloor-fine" cx="41.6" cy="67" r="0.6" />
+                <path
+                  class="seafloor-fine"
+                  d="M56.4 64H60.4M56.4 66H60.4M56.4 68H60.4M57.6 63V69M59.2 63V69"
+                />
+                <path d="M35.6 75.8Q34.2 79.4 38.8 79.4" />
+                <path d="M46.4 76Q46 79.6 50.4 79.6" />
+                <path d="M57.2 74.8Q57 78.2 61.2 78" />
+                <path d="M64.6 74.4Q65.8 77.6 69.2 77.2" />
               </g>
               <path
                 class="sand-fill"
@@ -927,7 +979,7 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >
-                <g transform="translate(16 76) scale(0.68) translate(-210 -76)">
+                <g transform="translate(8 76) scale(0.72) translate(-210 -76)">
                   <path
                     class="coral coral-orange"
                     d="M206 76 C205 71 204 67 204 64 C198 61 192 56 188 50 C185 46 188 44 191 48 C196 54 201 59 204 62 C202 56 198 50 196 44 C194 40 192 36 193 33 C196 31 200 35 202 40 C204 46 205 52 205 58 C208 52 212 46 214 40 C216 36 220 34 222 36 C220 40 218 46 216 52 C220 48 226 44 230 40 C233 38 232 42 228 46 C224 50 220 54 218 58 C222 56 228 54 232 52 C234 51 233 55 229 57 C224 60 218 63 214 64 C214 68 213 72 214 76Z"
@@ -935,13 +987,13 @@
                 </g>
                 <path
                   class="kelp kelp-b"
-                  d="M58 76C62 58 54 44 64 28C68 18 60 10 62 6C60 12 70 20 62 34C54 48 60 62 60 76Z"
+                  d="M48 76C52 60 44 48 54 34C58 24 50 16 52 12C50 18 60 26 52 40C44 54 50 66 50 76Z"
                 />
                 <path
                   class="kelp kelp-a"
-                  d="M72 76C70 62 76 50 68 38C64 30 72 24 68 16C70 24 64 32 70 44C76 56 72 66 74 76Z"
+                  d="M62 76C60 62 66 50 58 38C54 30 62 24 58 16C60 24 54 32 60 44C66 56 62 66 64 76Z"
                 />
-                <g transform="translate(188 76) scale(0.7) translate(-119 -76)">
+                <g transform="translate(278 76) scale(0.68) translate(-119 -76)">
                   <path
                     class="coral coral-yellow"
                     d="M114 76 C112 70 111 66 110 62 C104 60 98 56 92 50 C88 46 90 43 94 47 C98 52 104 57 109 60 C106 56 100 50 96 44 C92 38 88 34 86 30 C84 27 89 27 92 32 C96 38 102 46 106 52 C104 46 100 38 98 32 C96 28 94 24 95 22 C98 20 102 24 104 30 C106 36 108 44 110 50 C110 44 108 36 110 30 C111 26 116 26 116 31 C116 38 114 46 113 54 C116 48 120 40 122 34 C124 30 128 28 130 30 C128 34 126 40 124 46 C128 42 134 38 138 34 C141 32 140 36 136 40 C132 44 128 48 126 52 C130 50 136 48 140 46 C143 45 142 49 138 51 C132 54 126 58 122 60 C123 66 122 71 124 76Z"
@@ -949,22 +1001,18 @@
                 </g>
                 <path
                   class="kelp kelp-c"
-                  d="M228 76C226 64 232 54 224 44C220 38 228 32 224 24C226 32 220 40 226 50C232 60 228 68 230 76Z"
+                  d="M318 76C316 58 324 48 314 32C310 22 320 16 316 8C318 18 312 26 318 38C326 52 320 64 322 76Z"
                 />
-                <g transform="translate(268 76) scale(0.66) translate(-165 -76)">
+                <path
+                  class="kelp kelp-a"
+                  d="M332 76C336 62 328 50 338 36C342 26 334 18 336 14C334 20 344 28 336 42C328 56 334 66 334 76Z"
+                />
+                <g transform="translate(82 76) scale(0.62) translate(-165 -76)">
                   <path
                     class="coral coral-pink"
                     d="M162 76 C160 71 156 67 150 64 C144 60 138 54 134 48 C131 44 134 42 137 46 C142 52 148 58 154 62 C150 56 144 50 140 44 C136 38 132 34 130 30 C128 27 133 26 136 31 C140 36 146 44 150 50 C148 44 146 36 148 30 C149 26 154 27 154 32 C154 38 152 46 154 54 C158 50 164 44 168 38 C171 34 174 32 176 34 C174 38 170 44 166 50 C170 46 176 42 180 38 C183 36 182 40 178 44 C174 48 170 52 168 56 C172 56 178 54 182 52 C185 51 184 55 180 57 C174 60 168 64 166 66 C167 70 166 73 168 76Z"
                   />
                 </g>
-                <path
-                  class="kelp kelp-a"
-                  d="M312 76C310 58 318 48 308 32C304 22 314 16 310 8C312 18 306 26 312 38C320 52 314 64 316 76Z"
-                />
-                <path
-                  class="kelp kelp-b"
-                  d="M326 76C330 62 322 50 332 36C336 26 328 18 330 14C328 20 338 28 330 42C322 56 328 66 328 76Z"
-                />
               </g>
             </svg>
           </div>
@@ -972,5 +1020,6 @@
       </footer>
     </div>
     <script src="fish-counter.js"></script>
+    <script src="music.js"></script>
   </body>
 </html>

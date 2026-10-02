@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..600&family=Newsreader:ital,opsz,wght@1,6..72,400..500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400..600;1,400..600&family=Newsreader:ital,opsz,wght@1,6..72,400..500&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml" />
@@ -21,7 +21,7 @@
         --body-color: #111;
         --muted: rgba(0, 0, 0, 0.4);
         --rule: #f2f2f2;
-        --font: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        --font: "Figtree", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           sans-serif;
         --serif: "Newsreader", Georgia, serif;
       }
@@ -60,7 +60,7 @@
         position: relative;
         max-width: 36.375rem;
         margin: 0 auto;
-        padding: 5rem 1rem 2.5rem;
+        padding: 1.25rem 1rem 2.5rem;
       }
 
       .page::before {
@@ -380,10 +380,148 @@
         font-variant-numeric: tabular-nums;
       }
 
+      .water-surface {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4.25rem;
+        z-index: 10;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .wave-track {
+        position: absolute;
+        top: 0.7rem;
+        left: 0;
+        display: flex;
+        width: 200%;
+        height: 2.6rem;
+        animation: waveDrift 18s linear infinite;
+      }
+
+      .wave-track-b {
+        top: 1.15rem;
+        opacity: 0.42;
+        animation-duration: 26s;
+        animation-direction: reverse;
+      }
+
+      .wave-svg {
+        display: block;
+        flex: 0 0 50%;
+        width: 50%;
+        height: 100%;
+        overflow: visible;
+      }
+
+      .wave-line {
+        fill: none;
+        stroke: hsl(198, 28%, 50%);
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .boat {
+        position: absolute;
+        top: 0.35rem;
+        left: 0;
+        width: 3.35rem;
+        color: rgba(0, 0, 0, 0.5);
+        animation: boatSail 34s linear infinite;
+        will-change: transform;
+      }
+
+      .boat-inner {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        transform-origin: 50% 85%;
+        animation: boatBob 3.4s ease-in-out infinite;
+      }
+
+      .boat-inner.is-rustling {
+        animation: boatRustle 0.4s ease-in-out;
+      }
+
+      @keyframes waveDrift {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      @keyframes boatSail {
+        0% {
+          transform: translateX(8vw) scaleX(1);
+        }
+        49.9% {
+          transform: translateX(78vw) scaleX(1);
+        }
+        50% {
+          transform: translateX(78vw) scaleX(-1);
+        }
+        100% {
+          transform: translateX(8vw) scaleX(-1);
+        }
+      }
+
+      @keyframes boatBob {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-3deg);
+        }
+        50% {
+          transform: translateY(2.5px) rotate(3deg);
+        }
+      }
+
+      @keyframes boatRustle {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-3deg);
+        }
+        30% {
+          transform: translateY(2px) rotate(-8deg);
+        }
+        65% {
+          transform: translateY(-1px) rotate(6deg);
+        }
+      }
+
       .ocean-floor {
         position: relative;
         margin-top: 1.75rem;
         color: rgba(0, 0, 0, 0.4);
+      }
+
+      .saber {
+        fill: none;
+        stroke: hsl(210, 7%, 50%);
+        stroke-width: 1.4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .saber-fine {
+        stroke-width: 1.05;
+        stroke: hsl(210, 5%, 60%);
+      }
+
+      .sand-fill {
+        fill: var(--body-bg);
+      }
+
+      .sand-line {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.6;
+        stroke-linecap: round;
       }
 
       .seabed {
@@ -439,7 +577,10 @@
       @media (prefers-reduced-motion: reduce) {
         .kelp-a,
         .kelp-b,
-        .kelp-c {
+        .kelp-c,
+        .wave-track,
+        .boat,
+        .boat-inner {
           animation: none;
         }
       }
@@ -724,7 +865,7 @@
 
       @media screen and (max-width: 768px) {
         .page {
-          padding: 2rem 1.5rem 2.5rem;
+          padding: 1.25rem 1.5rem 2.5rem;
         }
 
         .page::before {
@@ -744,6 +885,58 @@
     </style>
   </head>
   <body>
+    <div class="water-surface" aria-hidden="true">
+      <div class="wave-track wave-track-a">
+        <svg class="wave-svg" viewBox="0 0 240 40" preserveAspectRatio="none">
+          <path
+            class="wave-line"
+            d="M0 18C28 11 92 25 120 18S212 11 240 18"
+          />
+        </svg>
+        <svg class="wave-svg" viewBox="0 0 240 40" preserveAspectRatio="none">
+          <path
+            class="wave-line"
+            d="M0 18C28 11 92 25 120 18S212 11 240 18"
+          />
+        </svg>
+      </div>
+      <div class="wave-track wave-track-b">
+        <svg class="wave-svg" viewBox="0 0 240 40" preserveAspectRatio="none">
+          <path
+            class="wave-line"
+            d="M0 22C38 17 82 27 120 22S202 17 240 22"
+          />
+        </svg>
+        <svg class="wave-svg" viewBox="0 0 240 40" preserveAspectRatio="none">
+          <path
+            class="wave-line"
+            d="M0 22C38 17 82 27 120 22S202 17 240 22"
+          />
+        </svg>
+      </div>
+      <div class="boat">
+        <svg
+          class="boat-inner"
+          viewBox="0 0 48 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M24 22V4" />
+            <path d="M24 5.2L38 20H24Z" />
+            <path d="M24 8L13 20" />
+            <path d="M24 4L30 5.6L24 7.4" />
+            <path d="M6 22C14 28 34 28 42 22" />
+            <path d="M11 22H37" />
+          </g>
+        </svg>
+      </div>
+    </div>
     <div class="page">
       <div class="homepage">
         <article class="article">
@@ -762,12 +955,9 @@
           <p>
             I currently do computational and wet-lab research in the
             <a class="basic-link" href="https://macmillan.princeton.edu/" target="_blank" rel="noopener noreferrer">MacMillan Group</a>
-            on how the protein microenvironment impacts therapy response in non-small cell lung cancer.
-          </p>
-          <p>
-            At the
-            <a class="basic-link" href="https://www.mskcc.org/research-areas/labs/jian-carrot-zhang" target="_blank" rel="noopener noreferrer">Memorial Sloan Kettering Cancer Center</a>,
-            I do computational research on how genetic predisposition affects cancer progression.
+            on how the protein microenvironment impacts therapy response in non-small cell lung cancer, and computational research at the
+            <a class="basic-link" href="https://www.mskcc.org/research-areas/labs/jian-carrot-zhang" target="_blank" rel="noopener noreferrer">Memorial Sloan Kettering Cancer Center</a>
+            on how genetic predisposition affects cancer progression.
           </p>
           <p>
             I also compete on Princeton’s NCAA Division I fencing team. We won the Ivy League Championships in 2025.
@@ -780,6 +970,8 @@
           </p>
           <p>
             <a class="basic-link" href="courses.html">Coursework</a>
+            ·
+            <a class="basic-link" href="music.html">Music</a>
           </p>
         </article>
 
@@ -823,24 +1015,34 @@
 
         <footer class="site-footer">
           <div class="inner">
-            <p>
-              <span id="clock"></span> in Princeton, New Jersey
-            </p>
             <div class="ocean-floor">
               <svg
                 class="seabed"
-                viewBox="0 0 360 88"
+                viewBox="0 0 360 96"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true"
               >
-                <g
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                >
-                  <path d="M6 76C48 73 86 78 128 75C172 72 214 77 258 74C300 72 332 76 354 75" />
+                <g class="saber" transform="translate(41 23) rotate(5 10 55)">
+                  <circle cx="10" cy="2.85" r="0.75" />
+                  <path d="M7.7 6C7.5 4.4 8.6 3.5 10 3.4C11.4 3.5 12.5 4.4 12.3 6" />
+                  <path d="M8.15 6C7.9 10 8.2 13.6 8.55 15.4" />
+                  <path d="M11.85 6C12.1 10 11.8 13.6 11.45 15.4" />
+                  <path class="saber-fine" d="M10 6.2V15.2" />
+                  <ellipse cx="10" cy="18.8" rx="8.3" ry="3.55" />
+                  <path d="M17.5 16.4C22.2 14.6 22.5 5.1 12.6 3.15C11.7 2.95 11.4 3.75 12.2 4.2C20.5 5.7 20.3 13.8 16.6 16.2C16.2 16.7 17 16.8 17.5 16.4Z" />
+                  <path d="M10 22.3L10 58.2" />
+                  <path class="saber-fine" d="M11.05 23.4L11.05 52.6" />
+                  <circle cx="10" cy="58.6" r="0.9" />
                 </g>
+                <path
+                  class="sand-fill"
+                  d="M0 76C48 73 86 78 128 75C172 72 214 77 258 74C300 72 332 76 360 75L360 96L0 96Z"
+                />
+                <path
+                  class="sand-line"
+                  d="M0 76C48 73 86 78 128 75C172 72 214 77 258 74C300 72 332 76 360 75"
+                />
                 <g fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                   <path
                     class="kelp kelp-a"
@@ -1151,6 +1353,7 @@
       }
 
       function tick() {
+        if (!clock) return;
         const now = easternNow();
         let hours = now.getHours();
         const minutes = pad(now.getMinutes());
@@ -1159,8 +1362,10 @@
         clock.textContent = hours + ":" + minutes + meridiem;
       }
 
-      tick();
-      setInterval(tick, 1000);
+      if (clock) {
+        tick();
+        setInterval(tick, 1000);
+      }
 
       (function swimTowardCursor() {
         const reduceMotion = window.matchMedia(
@@ -1607,7 +1812,7 @@
           .forEach(wrapRustleLetters);
 
         const rustleKelp = Array.prototype.slice.call(
-          document.querySelectorAll(".kelp")
+          document.querySelectorAll(".kelp, .boat-inner")
         );
         const rustleGroups = Array.prototype.slice
           .call(
@@ -1639,7 +1844,8 @@
         document.addEventListener("animationend", function (event) {
           if (
             event.animationName === "wordRipple" ||
-            event.animationName === "kelpRustle"
+            event.animationName === "kelpRustle" ||
+            event.animationName === "boatRustle"
           ) {
             event.target.classList.remove("is-rustling");
           }
