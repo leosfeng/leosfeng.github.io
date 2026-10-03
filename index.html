@@ -385,48 +385,23 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 4.25rem;
+        height: 5.75rem;
         z-index: 10;
         pointer-events: none;
         overflow: hidden;
       }
 
-      .wave-track {
+      .water-canvas {
         position: absolute;
-        top: 0.7rem;
+        top: 0;
         left: 0;
-        display: flex;
-        width: 200%;
-        height: 2.6rem;
-        animation: waveDrift 18s linear infinite;
-      }
-
-      .wave-track-b {
-        top: 1.15rem;
-        opacity: 0.42;
-        animation-duration: 26s;
-        animation-direction: reverse;
-      }
-
-      .wave-svg {
         display: block;
-        flex: 0 0 50%;
-        width: 50%;
-        height: 100%;
-        overflow: visible;
-      }
-
-      .wave-line {
-        fill: none;
-        stroke: hsl(198, 28%, 50%);
-        stroke-width: 1.5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
+        pointer-events: none;
       }
 
       .boat {
         position: absolute;
-        top: 0.35rem;
+        top: 1.85rem;
         left: 0;
         width: 3.35rem;
         color: rgba(0, 0, 0, 0.5);
@@ -445,15 +420,6 @@
 
       .boat-inner.is-rustling {
         animation: boatRustle 0.4s ease-in-out;
-      }
-
-      @keyframes waveDrift {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(-50%);
-        }
       }
 
       @keyframes boatSail {
@@ -578,7 +544,6 @@
         .kelp-a,
         .kelp-b,
         .kelp-c,
-        .wave-track,
         .boat,
         .boat-inner {
           animation: none;
@@ -718,8 +683,26 @@
         animation: blink 5s ease-in-out infinite;
       }
 
+      .shark .jaws {
+        opacity: 0;
+        transform: rotate(-24deg) scale(0.5);
+        transform-origin: 31.8px 17.3px;
+        transition:
+          opacity 0.12s ease,
+          transform 0.18s cubic-bezier(0.3, 1.5, 0.5, 1);
+      }
+
+      .shark .jaws-cover {
+        fill: var(--body-bg);
+      }
+
+      .shark.jaws-open:not(.sleeping) .jaws {
+        opacity: 1;
+        transform: none;
+      }
+
       .prey {
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
         z-index: 19;
@@ -886,34 +869,6 @@
   </head>
   <body>
     <div class="water-surface" aria-hidden="true">
-      <div class="wave-track wave-track-a">
-        <svg class="wave-svg" viewBox="0 0 240 40" preserveAspectRatio="none">
-          <path
-            class="wave-line"
-            d="M0 18C28 11 92 25 120 18S212 11 240 18"
-          />
-        </svg>
-        <svg class="wave-svg" viewBox="0 0 240 40" preserveAspectRatio="none">
-          <path
-            class="wave-line"
-            d="M0 18C28 11 92 25 120 18S212 11 240 18"
-          />
-        </svg>
-      </div>
-      <div class="wave-track wave-track-b">
-        <svg class="wave-svg" viewBox="0 0 240 40" preserveAspectRatio="none">
-          <path
-            class="wave-line"
-            d="M0 22C38 17 82 27 120 22S202 17 240 22"
-          />
-        </svg>
-        <svg class="wave-svg" viewBox="0 0 240 40" preserveAspectRatio="none">
-          <path
-            class="wave-line"
-            d="M0 22C38 17 82 27 120 22S202 17 240 22"
-          />
-        </svg>
-      </div>
       <div class="boat">
         <svg
           class="boat-inner"
@@ -1234,6 +1189,34 @@
              C5.7 12.4 3.5 9.55 1.5 7.1
              Z"
         />
+        <g
+          class="jaws"
+          stroke="rgba(0, 0, 0, 0.4)"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            class="jaws-cover"
+            d="M40.3 15.2L31.2 16.95L29.4 19.75L37.5 23.1L39 22.1Z"
+            stroke="none"
+          />
+          <path d="M39.7 15.7L31.8 17.3" stroke-width="1.6" fill="none" />
+          <path
+            d="M31.8 17.3L37.4 21.6Q38.5 22.4 37.2 22.7C34.6 22.3 32 21.2 29.95 19.85"
+            stroke-width="1.6"
+            fill="none"
+          />
+          <path
+            d="M38.9 15.86L38.5 16.95L37.8 16.08L37.4 17.2L36.7 16.31L36.3 17.42L35.6 16.53L35.2 17.62L34.5 16.76"
+            stroke-width="0.9"
+            fill="none"
+          />
+          <path
+            d="M33 18.22L33.6 17.25L34.1 19.06L34.7 18.05L35.2 19.9L35.8 18.9L36.3 20.75L36.9 19.75L37.2 21.4"
+            stroke-width="0.9"
+            fill="none"
+          />
+        </g>
         <circle
           class="eye"
           cx="32.9"
@@ -1261,6 +1244,7 @@
         </g>
       </g>
     </svg>
+    <script src="water.js"></script>
     <script src="fish-counter.js"></script>
     <script>
       if (sessionStorage.getItem("leo-home-visited")) {
@@ -1394,6 +1378,93 @@
         const eatRadius = 32;
         let chompUntil = 0;
 
+        const waterEl = document.querySelector(".water-surface");
+        let surfaced = false;
+        let sharkSpeed = 0;
+        let aimY = 0;
+        let leap = null;
+        let leapReadyAt = 0;
+        let jawsOpen = false;
+        const leapGravity = 0.36;
+        const boatEl = document.querySelector(".boat");
+
+        function waterLine() {
+          if (!waterEl) return -9999;
+          const level = window.LeoWater ? window.LeoWater.level : 30;
+          return waterEl.getBoundingClientRect().top + level;
+        }
+
+        function keepInWater(py) {
+          return Math.max(py, waterLine() + 6);
+        }
+
+        function aimAt(py) {
+          aimY = py;
+          return keepInWater(py);
+        }
+
+        function startLeap() {
+          const line = waterLine();
+          const height = Math.max(26, Math.min(line - aimY + 10, line - 12));
+          const dir = Math.cos(angle) < 0 ? -1 : 1;
+          leap = {
+            vx: Math.max(-4.5, Math.min(4.5, (tx - x) * 0.05 + dir * 2.4)),
+            vy: -Math.sqrt(2 * leapGravity * height)
+          };
+          surfaced = true;
+          if (window.LeoWater) window.LeoWater.splash(x, 1.2);
+        }
+
+        function updateJaws() {
+          let open = false;
+          if (boatEl && awake && !docked) {
+            const box = boatEl.getBoundingClientRect();
+            const dist = Math.hypot(
+              box.left + box.width / 2 - x,
+              box.top + box.height * 0.7 - y
+            );
+            open = jawsOpen ? dist < 110 : dist < 84;
+          }
+          if (open !== jawsOpen) {
+            jawsOpen = open;
+            shark.classList.toggle("jaws-open", open);
+          }
+        }
+
+        function updateSurfaceRipple(speed) {
+          const water = window.LeoWater;
+          if (!water || reduceMotion || docked || !awake) {
+            surfaced = false;
+            return;
+          }
+          if (leap) return;
+          const depth = y - waterLine();
+          const dir = Math.cos(angle) < 0 ? -1 : 1;
+          if (depth < 40) {
+            water.stir(x, (1 - depth / 40) * Math.min(0.45 + speed * 0.12, 1), dir);
+          }
+          if (!surfaced && depth < 20) {
+            surfaced = true;
+            water.splash(x + dir * 12, Math.min(0.6 + speed * 0.08, 1.3));
+          } else if (surfaced && depth > 34) {
+            surfaced = false;
+          }
+        }
+
+        function pageX(clientX) {
+          return clientX + window.scrollX;
+        }
+
+        function pageY(clientY) {
+          return clientY + window.scrollY;
+        }
+
+        function fishCeiling() {
+          if (!waterEl) return 36;
+          const box = waterEl.getBoundingClientRect();
+          return box.bottom + window.scrollY + 18;
+        }
+
         function restPoint() {
           const el = caveHome || cave;
           if (!el) {
@@ -1461,7 +1532,7 @@
           shark.setAttribute("aria-label", "Shark");
           if (typeof clientX === "number" && typeof clientY === "number") {
             tx = clientX;
-            ty = clientY;
+            ty = aimAt(clientY);
           }
         }
 
@@ -1494,8 +1565,10 @@
           if (prey.length >= maxPrey) return;
 
           const pad = 56;
-          const px = pad + Math.random() * Math.max(40, window.innerWidth - pad * 2);
-          const py = pad + Math.random() * Math.max(40, window.innerHeight - pad * 2);
+          const top = Math.max(fishCeiling(), window.scrollY + pad);
+          const bottom = Math.max(top + 40, window.scrollY + window.innerHeight - pad);
+          const px = pageX(pad + Math.random() * Math.max(40, window.innerWidth - pad * 2));
+          const py = top + Math.random() * (bottom - top);
           const facing = Math.random() < 0.5 ? 1 : -1;
           const swimAngle = facing > 0 ? 0 : Math.PI;
           const stroke =
@@ -1589,7 +1662,7 @@
               hunt = null;
               dragging = false;
               tx = event.clientX;
-              ty = event.clientY;
+              ty = aimAt(event.clientY);
               return;
             }
 
@@ -1626,9 +1699,9 @@
             tapStart.lastX = event.clientX;
             tapStart.lastY = event.clientY;
             tx = event.clientX;
-            ty = event.clientY;
+            ty = aimAt(event.clientY);
             x = event.clientX;
-            y = event.clientY;
+            y = keepInWater(event.clientY);
           },
           { capture: true, passive: false }
         );
@@ -1646,7 +1719,7 @@
           for (let i = 0; i < prey.length; i++) {
             const fish = prey[i];
             if (fish.eaten) continue;
-            const dist = Math.hypot(fish.x - clientX, fish.y - clientY);
+            const dist = Math.hypot(fish.x - pageX(clientX), fish.y - pageY(clientY));
             if (dist < nearestDist) {
               nearestDist = dist;
               nearest = fish;
@@ -1654,11 +1727,11 @@
           }
           if (nearest) {
             hunt = nearest;
-            tx = nearest.x;
-            ty = nearest.y;
+            tx = nearest.x - window.scrollX;
+            ty = aimAt(nearest.y - window.scrollY);
           } else {
             tx = clientX;
-            ty = clientY;
+            ty = aimAt(clientY);
           }
         }
 
@@ -1685,9 +1758,9 @@
               hunt = null;
               following = true;
               tx = event.clientX;
-              ty = event.clientY;
+              ty = aimAt(event.clientY);
               x = event.clientX;
-              y = event.clientY;
+              y = keepInWater(event.clientY);
               event.preventDefault();
               try {
                 shark.setPointerCapture(event.pointerId);
@@ -1888,30 +1961,66 @@
               if (hunt.eaten) {
                 hunt = null;
               } else {
-                tx = hunt.x;
-                ty = hunt.y;
+                tx = hunt.x - window.scrollX;
+                ty = aimAt(hunt.y - window.scrollY);
               }
             }
 
-            const trail = awake && !dragging ? 28 : 0;
-            const followX = tx - Math.cos(angle) * trail;
-            const followY = ty - Math.sin(angle) * trail;
-            const fx = followX - x;
-            const fy = followY - y;
-            const ease = dragging ? 1 : awake ? 0.16 : 0.18;
-            x += fx * ease;
-            y += fy * ease;
+            if (leap && (dragging || !awake)) leap = null;
+            if (
+              !leap &&
+              awake &&
+              !dragging &&
+              !reduceMotion &&
+              now > leapReadyAt &&
+              aimY < waterLine() - 16 &&
+              y - waterLine() < 14
+            ) {
+              startLeap();
+            }
+
+            let fx;
+            let fy;
+            if (leap) {
+              x += leap.vx;
+              y += leap.vy;
+              leap.vy += leapGravity;
+              fx = leap.vx;
+              fy = leap.vy;
+              if (leap.vy > 0 && y > waterLine() + 4) {
+                if (window.LeoWater) window.LeoWater.splash(x, 1.4);
+                leap = null;
+                leapReadyAt = now + 1400;
+              }
+            } else {
+              const nearSurface = awake && Math.min(y, ty) - waterLine() < 56;
+              const trail = awake && !dragging && !nearSurface ? 28 : 0;
+              const followX = tx - Math.cos(angle) * trail;
+              const followY = ty - Math.sin(angle) * trail;
+              fx = followX - x;
+              fy = followY - y;
+              const ease = dragging ? 1 : awake ? 0.16 : 0.18;
+              x += fx * ease;
+              y += fy * ease;
+              if (awake) {
+                y = keepInWater(y);
+                ty = keepInWater(ty);
+              }
+            }
 
             if (!awake && Math.hypot(fx, fy) < 2.5) {
               dockShark();
             } else {
               const speed = Math.hypot(fx, fy);
+              sharkSpeed = speed;
               if (awake && speed > 0.25) {
-                const next = Math.atan2(ty - y, tx - x);
+                const next = leap
+                  ? Math.atan2(leap.vy, leap.vx)
+                  : Math.atan2(ty - y, tx - x);
                 let diff = next - angle;
                 while (diff > Math.PI) diff -= Math.PI * 2;
                 while (diff < -Math.PI) diff += Math.PI * 2;
-                angle += diff * 0.22;
+                angle += diff * (leap ? 0.3 : 0.22);
               } else if (!awake) {
                 let diff = 0 - angle;
                 while (diff > Math.PI) diff -= Math.PI * 2;
@@ -1920,7 +2029,7 @@
               }
 
               const wiggle =
-                awake && !dragging && !reduceMotion
+                awake && !dragging && !reduceMotion && !leap
                   ? Math.sin(now / 160) * Math.min(speed, 10) * 0.35
                   : 0;
               const deg = (angle * 180) / Math.PI + wiggle;
@@ -1952,37 +2061,47 @@
             }
           }
 
+          const margin = 36;
+          const sharkPageX = pageX(x);
+          const sharkPageY = pageY(y);
+          const swimLeft = margin;
+          const swimRight = document.documentElement.clientWidth - margin;
+          const swimTop = fishCeiling();
+          const swimBottom = Math.max(
+            swimTop + 40,
+            document.documentElement.scrollHeight - margin
+          );
+
           for (let i = prey.length - 1; i >= 0; i--) {
             const fish = prey[i];
-            const margin = 36;
 
             if (!fish.eaten) {
               fish.vy += Math.sin(now / 700 + fish.x * 0.01) * 0.004;
               fish.x += fish.vx;
               fish.y += fish.vy;
 
-              if (fish.x < margin || fish.x > window.innerWidth - margin) {
+              if (fish.x < swimLeft || fish.x > swimRight) {
                 fish.vx *= -1;
-                fish.x = Math.max(margin, Math.min(window.innerWidth - margin, fish.x));
+                fish.x = Math.max(swimLeft, Math.min(swimRight, fish.x));
               }
-              if (fish.y < margin || fish.y > window.innerHeight - margin) {
+              if (fish.y < swimTop || fish.y > swimBottom) {
                 fish.vy *= -1;
-                fish.y = Math.max(margin, Math.min(window.innerHeight - margin, fish.y));
+                fish.y = Math.max(swimTop, Math.min(swimBottom, fish.y));
               }
 
               fish.angle = Math.atan2(fish.vy, fish.vx);
               fish.opacity = Math.min(1, (now - fish.born) / 280);
               fish.scale += (1 - fish.scale) * 0.12;
 
-              if (awake && Math.hypot(fish.x - x, fish.y - y) < eatRadius) {
+              if (awake && Math.hypot(fish.x - sharkPageX, fish.y - sharkPageY) < eatRadius) {
                 fish.eaten = true;
                 chompUntil = now + 320;
-                spawnBite(fish.x, fish.y);
+                spawnBite(fish.x - window.scrollX, fish.y - window.scrollY);
                 if (window.LeoFish) window.LeoFish.add();
               }
             } else {
-              fish.x += (x - fish.x) * 0.5;
-              fish.y += (y - fish.y) * 0.5;
+              fish.x += (sharkPageX - fish.x) * 0.5;
+              fish.y += (sharkPageY - fish.y) * 0.5;
               fish.scale *= 0.78;
               fish.opacity *= 0.72;
               fish.angle += 0.45;
@@ -2034,6 +2153,8 @@
           }
 
           rustleNearby();
+          updateSurfaceRipple(sharkSpeed);
+          updateJaws();
 
           requestAnimationFrame(frame);
         }

@@ -95,48 +95,23 @@
       .water-surface {
         position: relative;
         width: 100%;
-        height: 4.25rem;
+        height: 5.75rem;
         z-index: 10;
         pointer-events: none;
         overflow: hidden;
       }
 
-      .wave-track {
+      .water-canvas {
         position: absolute;
-        top: 0.7rem;
+        top: 0;
         left: 0;
-        display: flex;
-        width: 200%;
-        height: 2.6rem;
-        animation: waveDrift 18s linear infinite;
-      }
-
-      .wave-track-b {
-        top: 1.15rem;
-        opacity: 0.42;
-        animation-duration: 26s;
-        animation-direction: reverse;
-      }
-
-      .wave-svg {
         display: block;
-        flex: 0 0 50%;
-        width: 50%;
-        height: 100%;
-        overflow: visible;
-      }
-
-      .wave-line {
-        fill: none;
-        stroke: hsl(198, 28%, 50%);
-        stroke-width: 1.5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
+        pointer-events: none;
       }
 
       .boat {
         position: absolute;
-        top: 0.35rem;
+        top: 1.85rem;
         left: 0;
         width: 3.35rem;
         color: rgba(0, 0, 0, 0.5);
@@ -151,15 +126,6 @@
         overflow: visible;
         transform-origin: 50% 85%;
         animation: boatBob 3.4s ease-in-out infinite;
-      }
-
-      @keyframes waveDrift {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(-50%);
-        }
       }
 
       @keyframes boatSail {
@@ -316,12 +282,36 @@
         white-space: nowrap;
       }
 
-      .article > header h1 a {
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        margin-left: -1.6rem;
+        margin-right: 0.4rem;
+        vertical-align: -0.12rem;
+        color: #111;
+        text-decoration: none;
         transition: opacity 0.14s ease;
       }
 
-      .article > header h1 a:hover {
+      .back-link svg {
+        width: 0.95rem;
+        height: 0.95rem;
+        flex-shrink: 0;
+        transition: transform 0.18s ease;
+      }
+
+      .back-link:hover {
         opacity: 0.45;
+      }
+
+      .back-link:hover svg {
+        transform: translateX(-0.18rem);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .back-link svg {
+          transition: none;
+        }
       }
 
       .article > header p {
@@ -681,7 +671,6 @@
         .kelp-a,
         .kelp-b,
         .kelp-c,
-        .wave-track,
         .boat,
         .boat-inner,
         .drift-fish,
@@ -780,34 +769,6 @@
       <span class="bubble"></span>
     </div>
     <div class="water-surface" aria-hidden="true">
-      <div class="wave-track wave-track-a">
-        <svg class="wave-svg" viewBox="0 0 240 40" preserveAspectRatio="none">
-          <path
-            class="wave-line"
-            d="M0 18C28 11 92 25 120 18S212 11 240 18"
-          />
-        </svg>
-        <svg class="wave-svg" viewBox="0 0 240 40" preserveAspectRatio="none">
-          <path
-            class="wave-line"
-            d="M0 18C28 11 92 25 120 18S212 11 240 18"
-          />
-        </svg>
-      </div>
-      <div class="wave-track wave-track-b">
-        <svg class="wave-svg" viewBox="0 0 240 40" preserveAspectRatio="none">
-          <path
-            class="wave-line"
-            d="M0 22C38 17 82 27 120 22S202 17 240 22"
-          />
-        </svg>
-        <svg class="wave-svg" viewBox="0 0 240 40" preserveAspectRatio="none">
-          <path
-            class="wave-line"
-            d="M0 22C38 17 82 27 120 22S202 17 240 22"
-          />
-        </svg>
-      </div>
       <div class="boat">
         <svg class="boat-inner" viewBox="0 0 48 32" fill="none">
           <g
@@ -830,7 +791,23 @@
       <article class="article">
         <header>
           <div class="header-top">
-            <h1><a href="index.html">Leo S. Feng</a></h1>
+            <h1>
+              <a class="back-link" href="index.html" aria-label="Back to home">
+                <svg
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M13.5 8H2.8" />
+                  <path d="M7 3.6L2.6 8L7 12.4" />
+                </svg>
+              </a>
+              Leo S. Feng
+            </h1>
             <p class="fish-counter" id="fish-counter" hidden></p>
           </div>
           <p id="music-month">Music · September 2026</p>
@@ -1019,6 +996,7 @@
         </div>
       </footer>
     </div>
+    <script src="water.js"></script>
     <script src="fish-counter.js"></script>
     <script src="music.js"></script>
   </body>
