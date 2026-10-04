@@ -1,0 +1,88 @@
+{
+  "puzzles": [
+    {
+      "id": "mini-1",
+      "date": "2026-10-03",
+      "title": "Mini #1",
+      "grid": [
+        "#BANE",
+        "COMER",
+        "ANGER",
+        "READS",
+        "EDYS#"
+      ],
+      "clues": {
+        "across": {
+          "1": "Kryptonite, like Luke to Edison",
+          "5": "An avid storm chaser",
+          "6": "Common emotion for Edison",
+          "7": "What Brian does to books",
+          "8": "Consumables, in brief"
+        },
+        "down": {
+          "1": "Gave dih to, slangily",
+          "2": "\"I __ ___\" exclamation for Conan",
+          "3": "Edison _____ this interview",
+          "4": "Makes a mistake, like not dating the Storm",
+          "5": "\"I don't ____\", BW said nonchalantly while shaking his dreads"
+        }
+      }
+    },
+    {
+      "id": "mini-2",
+      "date": "2026-10-04",
+      "title": "Mini #2",
+      "grid": [
+        "HIT##",
+        "IMAGE",
+        "JCHUD",
+        "ABORT",
+        "BEET#"
+      ],
+      "clues": {
+        "across": {
+          "1": "4-Across, vis-a-vis Magdalena Bay",
+          "4": "\"__ not of ___\", Hana Lee said to Edison",
+          "7": "Loving nickname for PFT foilist '29",
+          "8": "What Allen's parents should have done when they had the chance",
+          "9": "Vegetable that's a homophone for what Evelyn does to Allen"
+        },
+        "down": {
+          "1": "Headwear for female members of a religious group",
+          "2": "How a student of the most aura major may introduce themselves",
+          "3": "\"Ooh, created Lake _____ all from her panties\" -Travis Scott, 90210",
+          "5": "Sayer of yo",
+          "6": "Time zone for the East Coast during spring and summer"
+        }
+      }
+    },
+    {
+      "id": "mini-3",
+      "date": "2026-10-04",
+      "title": "Mini #3",
+      "grid": [
+        "#THS#",
+        "PEETA",
+        "AXIOM",
+        "RADIO",
+        "KNICK"
+      ],
+      "clues": {
+        "across": {
+          "1": "This, when I leave",
+          "4": "Male lead in the Hunger Games",
+          "6": "Company that donates 400k/year to the homeless",
+          "7": "Music in the car",
+          "8": "Towns or Bridges"
+        },
+        "down": {
+          "1": "Sergei Kudriavtcev or CJ Stroud",
+          "2": "It comes in black and brown variants",
+          "3": "Poker-faced",
+          "4": "Lee and Edwards lover",
+          "5": "Running wild"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Crosswords — Leo S. Feng</title>
+    <meta
+      name="description"
+      content="Mini crosswords by Leo S. Feng."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400..600;1,400..600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml" />
+    <style>
+      :root {
+        --body-bg: #fdfdfc;
+        --body-color: #111;
+        --muted: rgba(0, 0, 0, 0.4);
+        --rule: #f2f2f2;
+        --font: "Figtree", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        background: var(--body-bg);
+        color: var(--body-color);
+        min-height: 100%;
+        max-width: 100%;
+        overflow-x: clip;
+      }
+
+      body {
+        position: relative;
+        min-height: 100%;
+        font-family: var(--font);
+        font-size: 16px;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        position: relative;
+        z-index: 1;
+        max-width: 36.375rem;
+        margin: 0 auto;
+        padding: 1.25rem 1rem 2.5rem;
+      }
+
+      .page::before {
+        content: "";
+        pointer-events: none;
+        z-index: 9;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8rem;
+        background: linear-gradient(
+          180deg,
+          #fff 0,
+          hsla(0, 0%, 100%, 0.738) 19%,
+          hsla(0, 0%, 100%, 0.541) 34%,
+          hsla(0, 0%, 100%, 0.382) 47%,
+          hsla(0, 0%, 100%, 0.278) 56.5%,
+          hsla(0, 0%, 100%, 0.194) 65%,
+          hsla(0, 0%, 100%, 0.126) 73%,
+          hsla(0, 0%, 100%, 0.075) 80.2%,
+          hsla(0, 0%, 100%, 0.042) 86.1%,
+          hsla(0, 0%, 100%, 0.021) 91%,
+          hsla(0, 0%, 100%, 0.008) 95.2%,
+          hsla(0, 0%, 100%, 0.002) 98.2%,
+          hsla(0, 0%, 100%, 0)
+        );
+      }
+
+      .water-surface {
+        position: relative;
+        width: 100%;
+        height: 5.75rem;
+        z-index: 10;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .water-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        pointer-events: none;
+      }
+
+      .boat {
+        position: absolute;
+        top: 1.85rem;
+        left: 0;
+        width: 3.35rem;
+        color: rgba(0, 0, 0, 0.5);
+        animation: boatSail 34s linear infinite;
+        will-change: transform;
+      }
+
+      .boat-inner {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        transform-origin: 50% 85%;
+        animation: boatBob 3.4s ease-in-out infinite;
+      }
+
+      @keyframes boatSail {
+        0% {
+          transform: translateX(8vw) scaleX(1);
+        }
+        49.9% {
+          transform: translateX(78vw) scaleX(1);
+        }
+        50% {
+          transform: translateX(78vw) scaleX(-1);
+        }
+        100% {
+          transform: translateX(8vw) scaleX(-1);
+        }
+      }
+
+      @keyframes boatBob {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-3deg);
+        }
+        50% {
+          transform: translateY(2.5px) rotate(3deg);
+        }
+      }
+
+      .reef-life {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .drift-fish {
+        position: absolute;
+        opacity: 0.32;
+        color: rgba(0, 0, 0, 0.55);
+      }
+
+      .fish-a {
+        top: 18%;
+        width: 1.7rem;
+        animation: fishSwim 34s linear infinite;
+      }
+
+      .fish-b {
+        top: 42%;
+        width: 2.1rem;
+        animation: fishSwimRev 42s linear infinite;
+        animation-delay: -14s;
+      }
+
+      .fish-c {
+        top: 63%;
+        width: 1.55rem;
+        animation: fishSwim 38s linear infinite;
+        animation-delay: -22s;
+      }
+
+      @keyframes fishSwim {
+        from {
+          transform: translateX(-8vw);
+        }
+        to {
+          transform: translateX(108vw);
+        }
+      }
+
+      @keyframes fishSwimRev {
+        from {
+          transform: translateX(108vw) scaleX(-1);
+        }
+        to {
+          transform: translateX(-8vw) scaleX(-1);
+        }
+      }
+
+      .bubble {
+        position: absolute;
+        border: 1.2px solid hsl(198, 28%, 58%);
+        border-radius: 50%;
+        opacity: 0.35;
+        animation: bubbleRise 11s ease-in infinite;
+      }
+
+      .bubble:nth-child(1) {
+        left: 12%;
+        width: 6px;
+        height: 6px;
+        bottom: 8%;
+        animation-duration: 13s;
+      }
+
+      .bubble:nth-child(2) {
+        left: 38%;
+        width: 4px;
+        height: 4px;
+        bottom: 4%;
+        animation-duration: 9s;
+        animation-delay: -3s;
+      }
+
+      .bubble:nth-child(3) {
+        left: 71%;
+        width: 7px;
+        height: 7px;
+        bottom: 12%;
+        animation-duration: 15s;
+        animation-delay: -6s;
+      }
+
+      .bubble:nth-child(4) {
+        left: 88%;
+        width: 5px;
+        height: 5px;
+        bottom: 2%;
+        animation-duration: 11s;
+        animation-delay: -1s;
+      }
+
+      @keyframes bubbleRise {
+        0% {
+          transform: translateY(0);
+          opacity: 0;
+        }
+        12% {
+          opacity: 0.35;
+        }
+        100% {
+          transform: translateY(-70vh);
+          opacity: 0;
+        }
+      }
+
+      .article > header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: 0 0 0.5rem;
+      }
+
+      .article > header h1,
+      .article > header p {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        letter-spacing: -0.00563rem;
+      }
+
+      .article > header h1 {
+        color: #111;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        margin-left: -1.6rem;
+        margin-right: 0.4rem;
+        vertical-align: -0.12rem;
+        color: #111;
+        text-decoration: none;
+        transition: opacity 0.14s ease;
+      }
+
+      .back-link svg {
+        width: 0.95rem;
+        height: 0.95rem;
+        flex-shrink: 0;
+        transition: transform 0.18s ease;
+      }
+
+      .back-link:hover {
+        opacity: 0.45;
+      }
+
+      .back-link:hover svg {
+        transform: translateX(-0.18rem);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .back-link svg {
+          transition: none;
+        }
+      }
+
+      .article > header p {
+        color: var(--muted);
+        font-weight: 460;
+      }
+
+      .header-top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .fish-counter {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.875rem;
+        font-weight: 460;
+        letter-spacing: -0.00563rem;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      .fish-counter.is-in {
+        animation: fishIn 0.35s ease both;
+      }
+
+      @keyframes fishIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .music-intro {
+        padding-top: 1.65rem;
+        max-width: 32rem;
+        color: var(--body-color);
+        font-size: 0.875rem;
+        font-weight: 460;
+        line-height: 1.45rem;
+        letter-spacing: -0.00563rem;
+      }
+
+      .chart {
+        padding: 2.25rem 0 0;
+      }
+
+      .chart + .chart {
+        padding-top: 2.6rem;
+      }
+
+      .chart-title {
+        color: var(--muted);
+        font-size: 0.875rem;
+        font-weight: 460;
+        letter-spacing: -0.00563rem;
+        line-height: 1.25rem;
+        padding-bottom: 0.45rem;
+      }
+
+      .chart ul {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+      }
+
+      .chart .course {
+        position: relative;
+        display: flex;
+        align-items: baseline;
+        justify-content: flex-start;
+        gap: 0.85rem;
+        padding: 0.735rem 0 0.735rem 2.05rem;
+      }
+
+      .chart .course::after {
+        content: "";
+        border-bottom: 1px solid var(--rule);
+        position: absolute;
+        bottom: 0;
+        left: 2.05rem;
+        right: 0;
+      }
+
+      .chart li:last-child .course::after {
+        display: none;
+      }
+
+      .rank {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1.55rem;
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 460;
+        letter-spacing: -0.00563rem;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .chart .course h2 {
+        min-width: 0;
+        color: #111;
+        font-size: 0.875rem;
+        font-weight: 460;
+        letter-spacing: -0.00563rem;
+        line-height: 1.25rem;
+        transition: opacity 0.14s ease;
+      }
+
+      .chart a.course:hover h2 {
+        opacity: 0.45;
+      }
+
+      .chart .code {
+        flex-shrink: 0;
+        max-width: 38%;
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 460;
+        letter-spacing: -0.00563rem;
+        text-align: right;
+      }
+
+      .cw-picks-title {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .cw-picks {
+        list-style: none;
+      }
+
+      .cw-pick {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.9rem 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .cw-picks li:last-child .cw-pick {
+        border-bottom: 0;
+      }
+
+      .cw-thumb {
+        display: grid;
+        flex-shrink: 0;
+        grid-template-columns: repeat(var(--cols), 0.62rem);
+        grid-auto-rows: 0.62rem;
+        gap: 1px;
+        padding: 1px;
+        border-radius: 2px;
+        background: rgba(0, 0, 0, 0.55);
+        transition: transform 0.18s ease;
+      }
+
+      .cw-thumb-cell {
+        background: #fff;
+      }
+
+      .cw-thumb-cell.is-block {
+        background: hsl(214, 24%, 24%);
+      }
+
+      .cw-thumb-cell.is-filled {
+        background: hsl(205, 80%, 80%);
+      }
+
+      .cw-pick.is-solved .cw-thumb-cell:not(.is-block) {
+        background: hsl(150, 42%, 72%);
+      }
+
+      .cw-pick:hover .cw-thumb {
+        transform: rotate(-4deg) scale(1.06);
+      }
+
+      .cw-pick-info {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 0.15rem;
+        min-width: 0;
+      }
+
+      .cw-pick-title {
+        color: #111;
+        font-size: 0.875rem;
+        font-weight: 560;
+        letter-spacing: -0.00563rem;
+        transition: opacity 0.14s ease;
+      }
+
+      .cw-pick:hover .cw-pick-title {
+        opacity: 0.45;
+      }
+
+      .cw-pick-date {
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 460;
+      }
+
+      .cw-pick-state {
+        display: grid;
+        grid-template-columns: auto auto;
+        align-items: baseline;
+        justify-content: end;
+        column-gap: 0.6rem;
+        row-gap: 0.4rem;
+        flex-shrink: 0;
+        width: 8.5rem;
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 460;
+        text-align: right;
+      }
+
+      .cw-pick-time {
+        color: #111;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .cw-pick-bar {
+        grid-column: 1 / -1;
+        height: 3px;
+        border-radius: 3px;
+        background: rgba(0, 0, 0, 0.07);
+        overflow: hidden;
+      }
+
+      .cw-pick-bar span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: hsl(205, 75%, 62%);
+      }
+
+      .cw-pick.is-solved .cw-pick-label {
+        color: hsl(150, 40%, 32%);
+        font-weight: 560;
+      }
+
+      .cw-pick.is-solved .cw-pick-label::before {
+        content: "✓ ";
+      }
+
+      .cw-pick.is-solved .cw-pick-bar span {
+        background: hsl(150, 42%, 50%);
+      }
+
+      .cw-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        margin-bottom: 0.9rem;
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 460;
+        transition: color 0.14s ease;
+      }
+
+      .cw-back svg {
+        width: 0.85rem;
+        height: 0.85rem;
+        transition: transform 0.18s ease;
+      }
+
+      .cw-back:hover {
+        color: #111;
+      }
+
+      .cw-back:hover svg {
+        transform: translateX(-0.18rem);
+      }
+
+      .cw-stage {
+        position: relative;
+      }
+
+      .crossword.is-covered .cw-bar,
+      .crossword.is-covered .cw-body,
+      .crossword.is-covered .cw-actions {
+        display: none;
+      }
+
+      .cw-cover {
+        display: flex;
+        min-height: 18rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        background:
+          linear-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px) 0 0 / 2.5rem 2.5rem,
+          linear-gradient(90deg, rgba(0, 0, 0, 0.035) 1px, transparent 1px) 0 0 / 2.5rem 2.5rem,
+          hsl(205, 70%, 96%);
+        text-align: center;
+        animation: cwCoverIn 0.3s ease both;
+      }
+
+      @keyframes cwCoverIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .cw-cover-title {
+        color: #111;
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      .cw-cover-text {
+        max-width: 18rem;
+        margin-bottom: 0.8rem;
+        color: var(--muted);
+        font-size: 0.875rem;
+        font-weight: 460;
+        line-height: 1.3rem;
+      }
+
+      .cw-action.cw-cover-go {
+        padding: 0.55rem 2rem;
+        border-color: #111;
+        background: #111;
+        color: #fff;
+        font-size: 0.9375rem;
+        transition: opacity 0.14s ease, transform 0.14s ease;
+      }
+
+      .cw-action.cw-cover-go:hover {
+        border-color: #111;
+        opacity: 0.85;
+        transform: translateY(-1px);
+      }
+
+      .cw-gate {
+        padding: 2.25rem 0 0;
+      }
+
+      .cw-gate-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-width: 22rem;
+      }
+
+      .cw-gate-label {
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 460;
+      }
+
+      .cw-gate-row {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .cw-gate-input {
+        flex: 1;
+        min-width: 0;
+        padding: 0.45rem 0.85rem;
+        border: 1px solid rgba(0, 0, 0, 0.14);
+        border-radius: 999px;
+        background: #fff;
+        color: #111;
+        font: inherit;
+        font-size: 16px;
+        font-weight: 460;
+        outline: none;
+        transition: border-color 0.14s ease, box-shadow 0.14s ease;
+      }
+
+      .cw-gate-input:focus {
+        border-color: hsl(205, 70%, 60%);
+        box-shadow: 0 0 0 3px hsl(205, 85%, 91%);
+      }
+
+      .cw-action.cw-gate-go {
+        flex-shrink: 0;
+        padding: 0.45rem 1rem;
+        border-color: #111;
+        background: #111;
+        color: #fff;
+        transition: opacity 0.14s ease;
+      }
+
+      .cw-action.cw-gate-go:hover {
+        border-color: #111;
+        opacity: 0.85;
+      }
+
+      .cw-gate-error {
+        min-height: 1.1rem;
+        color: hsl(355, 65%, 48%);
+        font-size: 0.8125rem;
+        font-weight: 460;
+      }
+
+      .cw-player {
+        margin-bottom: 1.25rem;
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 460;
+      }
+
+      .cw-player strong {
+        color: #111;
+        font-weight: 560;
+      }
+
+      .cw-player-change {
+        margin-left: 0.5rem;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--muted);
+        font: inherit;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        cursor: pointer;
+      }
+
+      .cw-player-change:hover {
+        color: #111;
+      }
+
+      .cw-leaderboard {
+        margin-top: 2.25rem;
+        max-width: 22rem;
+      }
+
+      .cw-leaderboard-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-bottom: 0.35rem;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .cw-leaderboard-head h3 {
+        color: var(--muted);
+        font-size: 0.75rem;
+        font-weight: 560;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .cw-leaderboard-you,
+      .cw-leaderboard-note {
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 460;
+      }
+
+      .cw-leaderboard-note {
+        padding: 0.6rem 0;
+      }
+
+      .cw-leaderboard-list {
+        list-style: none;
+      }
+
+      .cw-leaderboard-list li {
+        display: flex;
+        align-items: baseline;
+        gap: 0.75rem;
+        padding: 0.5rem 0.5rem;
+        border-bottom: 1px solid var(--rule);
+        font-size: 0.875rem;
+        font-weight: 460;
+      }
+
+      .cw-leaderboard-list li:last-child {
+        border-bottom: 0;
+      }
+
+      .cw-leaderboard-list li.is-you {
+        border-radius: 0.35rem;
+        background: hsl(46, 95%, 88%);
+      }
+
+      .cw-rank {
+        width: 1.2rem;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .cw-leaderboard-list li:nth-child(1) .cw-rank {
+        color: hsl(40, 75%, 42%);
+        font-weight: 600;
+      }
+
+      .cw-rank-name {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        color: #111;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .cw-rank-time {
+        color: #111;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .cw-blank {
+        display: inline-flex;
+        gap: 0.14em;
+        margin: 0 0.05em;
+        vertical-align: -0.05em;
+      }
+
+      .cw-blank-letter {
+        display: inline-block;
+        width: 0.5em;
+        height: 0.9em;
+        border-bottom: 1.4px solid currentColor;
+      }
+
+      .crossword {
+        --cell: 3.25rem;
+        padding: 2.25rem 0 0;
+      }
+
+      .cw-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-bottom: 0.75rem;
+      }
+
+      .cw-titles {
+        display: flex;
+        align-items: baseline;
+        gap: 0.6rem;
+        min-width: 0;
+      }
+
+      .cw-title {
+        color: #111;
+        font-size: 0.875rem;
+        font-weight: 560;
+        letter-spacing: -0.00563rem;
+      }
+
+      .cw-date,
+      .cw-timer {
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 460;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      .cw-bar {
+        display: flex;
+        align-items: baseline;
+        gap: 0.6rem;
+        min-height: 2.6rem;
+        margin-bottom: 1rem;
+        padding: 0.65rem 0.85rem;
+        border-radius: 0.5rem;
+        background: hsl(205, 85%, 94%);
+        color: #111;
+        font-size: 0.875rem;
+        font-weight: 460;
+        line-height: 1.3rem;
+        transition: background-color 0.2s ease;
+      }
+
+      .cw-bar-num {
+        flex-shrink: 0;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .cw-body {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.75rem;
+      }
+
+      .cw-board {
+        position: relative;
+        flex-shrink: 0;
+      }
+
+      .cw-grid {
+        display: grid;
+        grid-template-columns: repeat(var(--cols), var(--cell));
+        grid-auto-rows: var(--cell);
+        gap: 1px;
+        border: 1.5px solid rgba(0, 0, 0, 0.7);
+        border-radius: 3px;
+        overflow: hidden;
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      .cw-cell {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 0.12s ease;
+      }
+
+      .cw-cell.is-block {
+        background: hsl(214, 24%, 24%);
+        cursor: default;
+      }
+
+      .cw-cell.in-word {
+        background: hsl(205, 85%, 91%);
+      }
+
+      .cw-cell.is-active {
+        background: hsl(46, 95%, 72%);
+      }
+
+      .cw-num {
+        position: absolute;
+        top: 0.2rem;
+        left: 0.26rem;
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 0.62rem;
+        font-weight: 500;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .cw-letter {
+        padding-top: 0.2rem;
+        color: #111;
+        font-size: calc(var(--cell) * 0.46);
+        font-weight: 500;
+        line-height: 1;
+      }
+
+      .cw-cell.is-wrong .cw-letter {
+        color: hsl(355, 70%, 50%);
+      }
+
+      .cw-cell.is-wrong::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top right,
+          transparent calc(50% - 0.6px),
+          hsla(355, 70%, 50%, 0.7) 50%,
+          transparent calc(50% + 0.6px)
+        );
+      }
+
+      .crossword.is-solved .cw-cell:not(.is-block),
+      .crossword.is-solved .cw-bar {
+        background: hsl(150, 45%, 93%);
+      }
+
+      .cw-cell.is-cheering {
+        z-index: 1;
+        animation: cwCheer 0.55s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+        animation-delay: calc(var(--i, 0) * 55ms);
+      }
+
+      @keyframes cwCheer {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        45% {
+          transform: scale(1.14);
+          background: hsl(46, 95%, 78%);
+        }
+      }
+
+      .cw-confetti {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 30;
+        pointer-events: none;
+      }
+
+      .cw-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: var(--cell);
+        height: var(--cell);
+        padding: 0;
+        border: 0;
+        opacity: 0;
+        font-size: 16px;
+        caret-color: transparent;
+        pointer-events: none;
+      }
+
+      .cw-clues {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 1.25rem;
+        min-width: 0;
+      }
+
+      .cw-clue-group h3 {
+        margin-bottom: 0.25rem;
+        padding-bottom: 0.35rem;
+        border-bottom: 1px solid var(--rule);
+        color: var(--muted);
+        font-size: 0.75rem;
+        font-weight: 560;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .cw-clue-group ol {
+        list-style: none;
+      }
+
+      .cw-clue {
+        display: flex;
+        gap: 0.6rem;
+        width: 100%;
+        padding: 0.35rem 0.5rem;
+        border: 0;
+        border-left: 3px solid transparent;
+        border-radius: 0 0.35rem 0.35rem 0;
+        background: none;
+        color: #111;
+        font: inherit;
+        font-size: 0.875rem;
+        font-weight: 460;
+        line-height: 1.25rem;
+        letter-spacing: -0.00563rem;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .cw-clue:hover {
+        background: rgba(0, 0, 0, 0.03);
+      }
+
+      .cw-clue.is-active {
+        background: hsl(205, 85%, 91%);
+      }
+
+      .cw-clue.is-cross {
+        border-left-color: hsl(205, 80%, 78%);
+      }
+
+      .cw-clue-num {
+        flex-shrink: 0;
+        width: 1.1rem;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .cw-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding-top: 1.25rem;
+      }
+
+      .cw-action {
+        padding: 0.35rem 0.85rem;
+        border: 1px solid rgba(0, 0, 0, 0.14);
+        border-radius: 999px;
+        background: #fff;
+        color: #111;
+        font: inherit;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: border-color 0.14s ease;
+      }
+
+      .cw-action:hover {
+        border-color: rgba(0, 0, 0, 0.38);
+      }
+
+      .cw-status {
+        margin-left: 0.35rem;
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 460;
+      }
+
+      .crossword.is-solved .cw-status {
+        color: hsl(150, 40%, 32%);
+      }
+
+      .site-footer {
+        padding: 2.5rem 0 2rem;
+      }
+
+      .site-footer .inner::before {
+        content: "";
+        display: block;
+        height: 1px;
+        width: 3.125rem;
+        background: #ededed;
+        margin: 0 0 2.375rem;
+      }
+
+      .ocean-floor {
+        position: relative;
+        margin-top: 1.75rem;
+        color: rgba(0, 0, 0, 0.4);
+      }
+
+      .seabed {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        pointer-events: none;
+      }
+
+      .kelp {
+        fill: none;
+        stroke: hsl(142, 40%, 44%);
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transform-box: fill-box;
+        transform-origin: 50% 100%;
+      }
+
+      .kelp-a {
+        animation: kelpSway 6.5s ease-in-out infinite;
+      }
+
+      .kelp-b {
+        stroke: hsl(128, 36%, 46%);
+        animation: kelpSway 7.8s ease-in-out infinite reverse;
+      }
+
+      .kelp-c {
+        animation: kelpSway 5.6s ease-in-out infinite 0.6s;
+      }
+
+      .coral {
+        fill: none;
+        stroke-width: 1.45;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .coral-yellow {
+        stroke: hsl(44, 64%, 48%);
+      }
+
+      .coral-pink {
+        stroke: hsl(348, 58%, 52%);
+      }
+
+      .coral-orange {
+        stroke: hsl(22, 62%, 50%);
+      }
+
+      .pencil {
+        fill: var(--body-bg);
+        stroke: hsl(44, 64%, 46%);
+        stroke-width: 1.3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .pencil-wood {
+        stroke: hsl(30, 38%, 52%);
+      }
+
+      .pencil-lead {
+        fill: rgba(0, 0, 0, 0.55);
+        stroke: rgba(0, 0, 0, 0.55);
+      }
+
+      .pencil-band {
+        stroke: rgba(0, 0, 0, 0.45);
+      }
+
+      .pencil-eraser {
+        stroke: hsl(348, 58%, 62%);
+      }
+
+      .grid-tile {
+        fill: var(--body-bg);
+        stroke: rgba(0, 0, 0, 0.45);
+        stroke-width: 1.2;
+        stroke-linejoin: round;
+      }
+
+      .grid-tile-block {
+        fill: rgba(0, 0, 0, 0.4);
+        stroke: none;
+      }
+
+      .seafloor-fine {
+        stroke-width: 1;
+      }
+
+      .sand-fill {
+        fill: var(--body-bg);
+      }
+
+      .sand-line {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+      }
+
+      @keyframes kelpSway {
+        0%,
+        100% {
+          transform: rotate(-2.4deg);
+        }
+        50% {
+          transform: rotate(2.4deg);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .kelp-a,
+        .kelp-b,
+        .kelp-c,
+        .boat,
+        .boat-inner,
+        .drift-fish,
+        .bubble {
+          animation: none;
+        }
+
+        .cw-cell,
+        .cw-bar {
+          transition: none;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        .page {
+          padding: 1.25rem 1.5rem 2.5rem;
+        }
+
+        .page::before {
+          height: 2.5rem;
+        }
+      }
+
+      @media screen and (max-width: 560px) {
+        .crossword {
+          --cell: min(
+            3.25rem,
+            calc((100vw - 3rem - 3px - (var(--cols) - 1) * 1px) / var(--cols))
+          );
+        }
+
+        .cw-body {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .cw-board {
+          align-self: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reef-life" aria-hidden="true">
+      <svg class="drift-fish fish-a" viewBox="0 0 22 12" fill="none">
+        <path
+          d="M4.4 6C4.4 4.15 7.1 2.85 11.2 3.05C14.6 3.2 17.15 4.2 18.35 5.35C18.85 5.8 18.85 6.2 18.35 6.65C17.15 7.8 14.6 8.8 11.2 8.95C7.1 9.15 4.4 7.85 4.4 6Z"
+          stroke="currentColor"
+          stroke-width="1.45"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M4.5 6C2.9 4.55 1.45 3.55 0.95 3.7C1.7 5.15 1.85 6.85 0.95 8.3C1.5 8.2 3 7.25 4.5 6"
+          stroke="currentColor"
+          stroke-width="1.45"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <circle cx="15.7" cy="5.55" r="0.7" fill="currentColor" />
+      </svg>
+      <svg class="drift-fish fish-b" viewBox="0 0 22 16" fill="none">
+        <path
+          d="M5.2 8C5.2 5.35 8.35 3.15 12.35 3.3C15.55 3.45 18.05 5.15 19.1 7.35C19.5 7.85 19.5 8.4 19.1 8.9C18.05 11.1 15.55 12.8 12.35 12.95C8.35 13.1 5.2 10.9 5.2 8Z"
+          stroke="currentColor"
+          stroke-width="1.45"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M5.3 8C3.45 6.1 1.8 5.05 1.2 5.2C2.15 6.85 2.3 9.2 1.2 10.9C1.85 10.95 3.5 9.85 5.3 8"
+          stroke="currentColor"
+          stroke-width="1.45"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M10.15 3.35C10.7 1.15 12.65 0.85 13.4 3.2"
+          stroke="currentColor"
+          stroke-width="1.45"
+          stroke-linecap="round"
+        />
+        <path
+          d="M10.15 12.85C10.7 15.05 12.65 15.35 13.4 13"
+          stroke="currentColor"
+          stroke-width="1.45"
+          stroke-linecap="round"
+        />
+        <circle cx="16.2" cy="7.4" r="0.7" fill="currentColor" />
+      </svg>
+      <svg class="drift-fish fish-c" viewBox="0 0 22 12" fill="none">
+        <path
+          d="M4.4 6C4.4 4.15 7.1 2.85 11.2 3.05C14.6 3.2 17.15 4.2 18.35 5.35C18.85 5.8 18.85 6.2 18.35 6.65C17.15 7.8 14.6 8.8 11.2 8.95C7.1 9.15 4.4 7.85 4.4 6Z"
+          stroke="currentColor"
+          stroke-width="1.45"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M4.5 6C2.9 4.55 1.45 3.55 0.95 3.7C1.7 5.15 1.85 6.85 0.95 8.3C1.5 8.2 3 7.25 4.5 6"
+          stroke="currentColor"
+          stroke-width="1.45"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <circle cx="15.7" cy="5.55" r="0.7" fill="currentColor" />
+      </svg>
+      <span class="bubble"></span>
+      <span class="bubble"></span>
+      <span class="bubble"></span>
+      <span class="bubble"></span>
+    </div>
+    <div class="water-surface" aria-hidden="true">
+      <div class="boat">
+        <svg class="boat-inner" viewBox="0 0 48 32" fill="none">
+          <g
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M24 22V4" />
+            <path d="M24 5.2L38 20H24Z" />
+            <path d="M24 8L13 20" />
+            <path d="M24 4L30 5.6L24 7.4" />
+            <path d="M6 22C14 28 34 28 42 22" />
+            <path d="M11 22H37" />
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="page">
+      <article class="article">
+        <header>
+          <div class="header-top">
+            <h1>
+              <a class="back-link" href="index.html" aria-label="Back to home">
+                <svg
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M13.5 8H2.8" />
+                  <path d="M7 3.6L2.6 8L7 12.4" />
+                </svg>
+              </a>
+              Leo S. Feng
+            </h1>
+            <p class="fish-counter" id="fish-counter" hidden></p>
+          </div>
+          <p>Crosswords</p>
+        </header>
+      </article>
+
+      <p class="music-intro" id="cw-intro">
+        Mini crosswords I make for fun. Pick one to play.
+      </p>
+
+      <section class="cw-gate" id="cw-gate" hidden></section>
+
+      <section class="crossword" id="crossword" hidden></section>
+
+      <section class="chart" id="puzzle-list" hidden></section>
+
+      <footer class="site-footer">
+        <div class="inner">
+          <div class="ocean-floor">
+            <svg
+              class="seabed"
+              viewBox="0 0 360 96"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <g class="pencil" transform="translate(150 42) rotate(62)">
+                <path class="pencil-eraser" d="M5 -3H1.8Q0 -3 0 -1.2V1.2Q0 3 1.8 3H5Z" />
+                <path class="pencil-band" d="M5 -3H9.2V3H5Z" />
+                <path class="pencil-band seafloor-fine" d="M6.4 -3V3M7.8 -3V3" />
+                <path d="M9.2 -3H35.5V3H9.2Z" />
+                <path class="seafloor-fine" d="M9.2 0H35.5" />
+                <path class="pencil-wood" d="M35.5 -3L44 0L35.5 3" />
+                <path class="pencil-lead" d="M41.2 -0.95L44 0L41.2 0.95Z" />
+              </g>
+              <g class="grid-tile" transform="translate(186 61) rotate(-14 8 8)">
+                <rect x="0" y="0" width="16" height="16" rx="1" />
+                <rect class="grid-tile-block" x="10.67" y="0" width="5.33" height="5.33" />
+                <rect class="grid-tile-block" x="0" y="10.67" width="5.33" height="5.33" />
+                <path class="seafloor-fine" d="M5.33 0V16M10.67 0V16M0 5.33H16M0 10.67H16" />
+              </g>
+              <path
+                class="sand-fill"
+                d="M0 76C48 73 86 78 128 75C172 72 214 77 258 74C300 72 332 76 360 75L360 96L0 96Z"
+              />
+              <path
+                class="sand-line"
+                d="M0 76C48 73 86 78 128 75C172 72 214 77 258 74C300 72 332 76 360 75"
+              />
+              <g
+                fill="none"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <g transform="translate(8 76) scale(0.72) translate(-210 -76)">
+                  <path
+                    class="coral coral-orange"
+                    d="M206 76 C205 71 204 67 204 64 C198 61 192 56 188 50 C185 46 188 44 191 48 C196 54 201 59 204 62 C202 56 198 50 196 44 C194 40 192 36 193 33 C196 31 200 35 202 40 C204 46 205 52 205 58 C208 52 212 46 214 40 C216 36 220 34 222 36 C220 40 218 46 216 52 C220 48 226 44 230 40 C233 38 232 42 228 46 C224 50 220 54 218 58 C222 56 228 54 232 52 C234 51 233 55 229 57 C224 60 218 63 214 64 C214 68 213 72 214 76Z"
+                  />
+                </g>
+                <path
+                  class="kelp kelp-b"
+                  d="M48 76C52 60 44 48 54 34C58 24 50 16 52 12C50 18 60 26 52 40C44 54 50 66 50 76Z"
+                />
+                <path
+                  class="kelp kelp-a"
+                  d="M62 76C60 62 66 50 58 38C54 30 62 24 58 16C60 24 54 32 60 44C66 56 62 66 64 76Z"
+                />
+                <g transform="translate(278 76) scale(0.68) translate(-119 -76)">
+                  <path
+                    class="coral coral-yellow"
+                    d="M114 76 C112 70 111 66 110 62 C104 60 98 56 92 50 C88 46 90 43 94 47 C98 52 104 57 109 60 C106 56 100 50 96 44 C92 38 88 34 86 30 C84 27 89 27 92 32 C96 38 102 46 106 52 C104 46 100 38 98 32 C96 28 94 24 95 22 C98 20 102 24 104 30 C106 36 108 44 110 50 C110 44 108 36 110 30 C111 26 116 26 116 31 C116 38 114 46 113 54 C116 48 120 40 122 34 C124 30 128 28 130 30 C128 34 126 40 124 46 C128 42 134 38 138 34 C141 32 140 36 136 40 C132 44 128 48 126 52 C130 50 136 48 140 46 C143 45 142 49 138 51 C132 54 126 58 122 60 C123 66 122 71 124 76Z"
+                  />
+                </g>
+                <path
+                  class="kelp kelp-c"
+                  d="M318 76C316 58 324 48 314 32C310 22 320 16 316 8C318 18 312 26 318 38C326 52 320 64 322 76Z"
+                />
+                <path
+                  class="kelp kelp-a"
+                  d="M332 76C336 62 328 50 338 36C342 26 334 18 336 14C334 20 344 28 336 42C328 56 334 66 334 76Z"
+                />
+                <g transform="translate(82 76) scale(0.62) translate(-165 -76)">
+                  <path
+                    class="coral coral-pink"
+                    d="M162 76 C160 71 156 67 150 64 C144 60 138 54 134 48 C131 44 134 42 137 46 C142 52 148 58 154 62 C150 56 144 50 140 44 C136 38 132 34 130 30 C128 27 133 26 136 31 C140 36 146 44 150 50 C148 44 146 36 148 30 C149 26 154 27 154 32 C154 38 152 46 154 54 C158 50 164 44 168 38 C171 34 174 32 176 34 C174 38 170 44 166 50 C170 46 176 42 180 38 C183 36 182 40 178 44 C174 48 170 52 168 56 C172 56 178 54 182 52 C185 51 184 55 180 57 C174 60 168 64 166 66 C167 70 166 73 168 76Z"
+                  />
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="water.js"></script>
+    <script src="fish-counter.js"></script>
+    <script src="crosswords.js"></script>
+  </body>
+</html>

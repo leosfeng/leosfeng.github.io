@@ -422,6 +422,48 @@
         animation: boatRustle 0.4s ease-in-out;
       }
 
+      .boat-inner.is-straining {
+        animation: boatStrain 0.18s ease-in-out infinite;
+      }
+
+      .boat.is-wrecked {
+        visibility: hidden;
+        animation: none;
+      }
+
+      .boat.is-arriving {
+        animation: boatArrive 4.86s linear forwards;
+      }
+
+      .wreck-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 15;
+        pointer-events: none;
+      }
+
+      @keyframes boatStrain {
+        0%,
+        100% {
+          transform: translateY(calc(var(--strain, 0.3) * 2px))
+            rotate(calc(var(--strain, 0.3) * -9deg));
+        }
+        50% {
+          transform: translateY(calc(var(--strain, 0.3) * -1px))
+            rotate(calc(var(--strain, 0.3) * 9deg));
+        }
+      }
+
+      @keyframes boatArrive {
+        from {
+          transform: translateX(-12vw) scaleX(1);
+        }
+        to {
+          transform: translateX(8vw) scaleX(1);
+        }
+      }
+
       @keyframes boatSail {
         0% {
           transform: translateX(8vw) scaleX(1);
@@ -927,6 +969,8 @@
             <a class="basic-link" href="courses.html">Coursework</a>
             ·
             <a class="basic-link" href="music.html">Music</a>
+            ·
+            <a class="basic-link" href="crosswords.html">Crosswords</a>
           </p>
         </article>
 
@@ -1245,6 +1289,7 @@
       </g>
     </svg>
     <script src="water.js"></script>
+    <script src="shipwreck.js"></script>
     <script src="fish-counter.js"></script>
     <script>
       if (sessionStorage.getItem("leo-home-visited")) {
@@ -1387,6 +1432,37 @@
         let jawsOpen = false;
         const leapGravity = 0.36;
         const boatEl = document.querySelector(".boat");
+        const boatInner = boatEl && boatEl.querySelector(".boat-inner");
+        let boatTime = 0;
+        let lastBoatCheck = null;
+
+        function boatGone() {
+          return Boolean(window.LeoWreck && window.LeoWreck.active);
+        }
+
+        function updateBoatAttack(now) {
+          const dt = lastBoatCheck === null ? 0 : Math.min((now - lastBoatCheck) / 1000, 0.1);
+          lastBoatCheck = now;
+          let on = false;
+          if (window.LeoWreck && !boatGone() && !reduceMotion && boatEl && awake && !docked) {
+            const box = boatEl.getBoundingClientRect();
+            on =
+              Math.abs(box.left + box.width / 2 - x) < box.width / 2 + 8 &&
+              y > box.top - 10 &&
+              y - waterLine() < 30;
+          }
+          boatTime = on ? boatTime + dt : Math.max(0, boatTime - dt * 2);
+          const strain = boatTime > 0.8 ? Math.min((boatTime - 0.8) / 3.2, 1) : 0;
+          if (boatInner) {
+            boatInner.classList.toggle("is-straining", strain > 0);
+            boatInner.style.setProperty("--strain", (0.25 + strain * 0.75).toFixed(2));
+          }
+          if (boatTime >= 4) {
+            boatTime = 0;
+            if (boatInner) boatInner.classList.remove("is-straining");
+            window.LeoWreck.sink();
+          }
+        }
 
         function waterLine() {
           if (!waterEl) return -9999;
@@ -1417,7 +1493,7 @@
 
         function updateJaws() {
           let open = false;
-          if (boatEl && awake && !docked) {
+          if (boatEl && awake && !docked && !boatGone()) {
             const box = boatEl.getBoundingClientRect();
             const dist = Math.hypot(
               box.left + box.width / 2 - x,
@@ -1463,6 +1539,15 @@
           if (!waterEl) return 36;
           const box = waterEl.getBoundingClientRect();
           return box.bottom + window.scrollY + 18;
+        }
+
+        const seabedEl = document.querySelector(".seabed");
+
+        function fishFloor() {
+          const bottom = document.documentElement.scrollHeight - 36;
+          if (!seabedEl) return bottom;
+          const box = seabedEl.getBoundingClientRect();
+          return Math.min(bottom, box.top + window.scrollY + box.height * (72 / 96) - 12);
         }
 
         function restPoint() {
@@ -1566,7 +1651,10 @@
 
           const pad = 56;
           const top = Math.max(fishCeiling(), window.scrollY + pad);
-          const bottom = Math.max(top + 40, window.scrollY + window.innerHeight - pad);
+          const bottom = Math.max(
+            top + 40,
+            Math.min(window.scrollY + window.innerHeight - pad, fishFloor())
+          );
           const px = pageX(pad + Math.random() * Math.max(40, window.innerWidth - pad * 2));
           const py = top + Math.random() * (bottom - top);
           const facing = Math.random() < 0.5 ? 1 : -1;
@@ -2067,10 +2155,7 @@
           const swimLeft = margin;
           const swimRight = document.documentElement.clientWidth - margin;
           const swimTop = fishCeiling();
-          const swimBottom = Math.max(
-            swimTop + 40,
-            document.documentElement.scrollHeight - margin
-          );
+          const swimBottom = Math.max(swimTop + 40, fishFloor());
 
           for (let i = prey.length - 1; i >= 0; i--) {
             const fish = prey[i];
@@ -2155,6 +2240,7 @@
           rustleNearby();
           updateSurfaceRipple(sharkSpeed);
           updateJaws();
+          updateBoatAttack(now);
 
           requestAnimationFrame(frame);
         }
