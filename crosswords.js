@@ -7,8 +7,8 @@
 
   // Supabase project URL and anon public key (Project Settings → API).
   var LEADERBOARD = {
-    url: "",
-    key: ""
+    url: "https://fxjejwkmskzsvreagcmr.supabase.co",
+    key: "sb_publishable_FaSzIso4MiscMKsP8zviIA_20STuCdg"
   };
 
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
