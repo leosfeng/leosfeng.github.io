@@ -15,6 +15,16 @@
       rel="stylesheet"
     />
     <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/cap-180.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Leo S. Feng" />
+    <meta property="og:title" content="Courses — Leo S. Feng" />
+    <meta property="og:description" content="Coursework at Princeton." />
+    <meta property="og:url" content="https://leosfeng.github.io/courses.html" />
+    <meta property="og:image" content="https://leosfeng.github.io/icons/cap-1200.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
+    <meta name="twitter:card" content="summary" />
     <style>
       :root {
         --body-bg: #fdfdfc;
@@ -49,6 +59,20 @@
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+      }
+
+      html,
+      body {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      input,
+      textarea {
+        -webkit-user-select: text;
+        user-select: text;
       }
 
       a {
@@ -563,6 +587,11 @@
       @media screen and (max-width: 768px) {
         .page {
           padding: 1.25rem 1.5rem 2.5rem;
+        }
+
+        .back-link {
+          margin-left: 0;
+          margin-right: 0.45rem;
         }
 
         .page::before {

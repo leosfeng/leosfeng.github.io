@@ -15,6 +15,16 @@
       rel="stylesheet"
     />
     <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/shark-180.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Leo S. Feng" />
+    <meta property="og:title" content="Leo S. Feng" />
+    <meta property="og:description" content="Princeton ORFE. Computational biology at the MacMillan Group and the Carrot-Zhang Lab." />
+    <meta property="og:url" content="https://leosfeng.github.io/" />
+    <meta property="og:image" content="https://leosfeng.github.io/icons/shark-1200.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
+    <meta name="twitter:card" content="summary" />
     <style>
       :root {
         --body-bg: #fdfdfc;
@@ -49,6 +59,20 @@
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+      }
+
+      html,
+      body {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      input,
+      textarea {
+        -webkit-user-select: text;
+        user-select: text;
       }
 
       a {
@@ -1786,10 +1810,44 @@
             }
             tapStart.lastX = event.clientX;
             tapStart.lastY = event.clientY;
-            tx = event.clientX;
-            ty = aimAt(event.clientY);
-            x = event.clientX;
-            y = keepInWater(event.clientY);
+            const gx = event.clientX + tapStart.offX;
+            const gy = event.clientY + tapStart.offY;
+            tx = gx;
+            ty = aimAt(gy);
+            x = gx;
+            y = keepInWater(gy);
+          },
+          { capture: true, passive: false }
+        );
+
+        const GRAB_RADIUS = 44;
+
+        function nearShark(clientX, clientY) {
+          if (awake) return Math.hypot(clientX - x, clientY - y) < GRAB_RADIUS;
+          const box = shark.getBoundingClientRect();
+          return (
+            clientX > box.left - 16 &&
+            clientX < box.right + 16 &&
+            clientY > box.top - 16 &&
+            clientY < box.bottom + 16
+          );
+        }
+
+        window.addEventListener(
+          "touchstart",
+          function (event) {
+            if (!awake || event.touches.length !== 1) return;
+            const t = event.touches[0];
+            if (ignoreTapTarget(event.target)) return;
+            if (nearShark(t.clientX, t.clientY)) event.preventDefault();
+          },
+          { capture: true, passive: false }
+        );
+
+        window.addEventListener(
+          "touchmove",
+          function (event) {
+            if (dragging) event.preventDefault();
           },
           { capture: true, passive: false }
         );
@@ -1827,7 +1885,12 @@
           "pointerdown",
           function (event) {
             if (event.pointerType !== "touch" && event.pointerType !== "pen") return;
-            const onShark = !!(event.target.closest && event.target.closest(".shark"));
+            const hitShark = !!(event.target.closest && event.target.closest(".shark"));
+            const inCave = !!(event.target.closest && event.target.closest(".cave"));
+            const onShark =
+              hitShark ||
+              ((!ignoreTapTarget(event.target) || (!awake && inCave)) &&
+                nearShark(event.clientX, event.clientY));
             tapStart = {
               x: event.clientX,
               y: event.clientY,
@@ -1835,7 +1898,9 @@
               onShark: onShark,
               ignore: !onShark && ignoreTapTarget(event.target),
               lastX: event.clientX,
-              lastY: event.clientY
+              lastY: event.clientY,
+              offX: 0,
+              offY: 0
             };
             touchMode = null;
             dragging = false;
@@ -1845,10 +1910,10 @@
               dragging = true;
               hunt = null;
               following = true;
-              tx = event.clientX;
-              ty = aimAt(event.clientY);
-              x = event.clientX;
-              y = keepInWater(event.clientY);
+              tapStart.offX = x - event.clientX;
+              tapStart.offY = y - event.clientY;
+              tx = x;
+              ty = aimAt(y);
               event.preventDefault();
               try {
                 shark.setPointerCapture(event.pointerId);
@@ -1866,12 +1931,31 @@
             const dy = event.clientY - tapStart.y;
             const wasTap = !touchMode && Math.hypot(dx, dy) <= 12;
             const ignore = tapStart.ignore;
+            const nearSleeping = !awake && tapStart.onShark;
             tapStart = null;
             dragging = false;
             touchMode = null;
-            if (!awake) return;
+            if (!awake) {
+              if (wasTap && nearSleeping) {
+                swallowClickUntil = performance.now() + 600;
+                wakeShark(event.clientX, event.clientY);
+              }
+              return;
+            }
             if (!wasTap || ignore) return;
             sendSharkTo(event.clientX, event.clientY);
+          },
+          { capture: true }
+        );
+
+        let swallowClickUntil = 0;
+        window.addEventListener(
+          "click",
+          function (event) {
+            if (performance.now() > swallowClickUntil) return;
+            swallowClickUntil = 0;
+            event.preventDefault();
+            event.stopPropagation();
           },
           { capture: true }
         );

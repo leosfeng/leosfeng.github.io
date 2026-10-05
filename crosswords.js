@@ -14,11 +14,15 @@
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   var STORE = "leo-crossword-";
   var NAME_KEY = "leo-crossword-player";
+  var UNLOCK_KEY = "leo-crossword-unlocked";
+  var PASSWORD = "donquavius";
   var DIRS = ["across", "down"];
 
   var playerName = "";
+  var unlocked = false;
   try {
     playerName = localStorage.getItem(NAME_KEY) || "";
+    unlocked = localStorage.getItem(UNLOCK_KEY) === "1";
   } catch (err) {}
 
   var puzzles = [];
@@ -816,15 +820,15 @@
     gate.hidden = false;
     gate.innerHTML = "";
     if (intro) {
-      intro.textContent =
-        "Mini crosswords I make for fun. Enter your name so your times can go on the leaderboard.";
+      intro.textContent = unlocked
+        ? "Mini crosswords I make for fun. Enter your name so your times can go on the leaderboard."
+        : "Mini crosswords I make for fun. Enter your name and the password to play.";
     }
     document.title = "Crosswords — Leo S. Feng";
 
     var form = el("form", "cw-gate-form");
     var label = el("label", "cw-gate-label", "Your name");
     label.htmlFor = "cw-gate-name";
-    var row = el("div", "cw-gate-row");
     var input = el("input", "cw-gate-input");
     input.id = "cw-gate-name";
     input.type = "text";
@@ -834,11 +838,30 @@
     input.value = playerName;
     var go = el("button", "cw-action cw-gate-go", "Let's play");
     go.type = "submit";
-    row.appendChild(input);
-    row.appendChild(go);
-    var error = el("p", "cw-gate-error");
     form.appendChild(label);
-    form.appendChild(row);
+
+    var secret = null;
+    if (unlocked) {
+      var row = el("div", "cw-gate-row");
+      row.appendChild(input);
+      row.appendChild(go);
+      form.appendChild(row);
+    } else {
+      form.appendChild(input);
+      var secretLabel = el("label", "cw-gate-label cw-gate-label-gap", "Password");
+      secretLabel.htmlFor = "cw-gate-password";
+      secret = el("input", "cw-gate-input");
+      secret.id = "cw-gate-password";
+      secret.type = "password";
+      secret.autocomplete = "current-password";
+      var secretRow = el("div", "cw-gate-row");
+      secretRow.appendChild(secret);
+      secretRow.appendChild(go);
+      form.appendChild(secretLabel);
+      form.appendChild(secretRow);
+    }
+
+    var error = el("p", "cw-gate-error");
     form.appendChild(error);
     form.addEventListener("submit", function (event) {
       event.preventDefault();
@@ -848,15 +871,23 @@
         input.focus();
         return;
       }
+      if (secret && secret.value.trim().toLowerCase() !== PASSWORD) {
+        error.textContent = secret.value ? "That's not the password." : "Enter the password.";
+        secret.value = "";
+        secret.focus();
+        return;
+      }
       playerName = name;
+      unlocked = true;
       try {
         localStorage.setItem(NAME_KEY, name);
+        localStorage.setItem(UNLOCK_KEY, "1");
       } catch (err) {}
       gate.hidden = true;
       route();
     });
     gate.appendChild(form);
-    input.focus();
+    (playerName && secret ? secret : input).focus();
   }
 
   function showList() {
@@ -961,7 +992,7 @@
   }
 
   function route() {
-    if (!playerName) return showGate();
+    if (!playerName || !unlocked) return showGate();
     var p = fromHash();
     if (p) {
       if (p !== puzzle) {

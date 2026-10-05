@@ -1,37 +1,9 @@
 {
   "puzzles": [
     {
-      "id": "mini-1",
-      "date": "2026-10-03",
-      "title": "Mini #1",
-      "grid": [
-        "#BANE",
-        "COMER",
-        "ANGER",
-        "READS",
-        "EDYS#"
-      ],
-      "clues": {
-        "across": {
-          "1": "Kryptonite, like Luke to Edison",
-          "5": "An avid storm chaser",
-          "6": "Common emotion for Edison",
-          "7": "What Brian does to books",
-          "8": "Consumables, in brief"
-        },
-        "down": {
-          "1": "Gave dih to, slangily",
-          "2": "\"I __ ___\" exclamation for Conan",
-          "3": "Edison _____ this interview",
-          "4": "Makes a mistake, like not dating the Storm",
-          "5": "\"I don't ____\", BW said nonchalantly while shaking his dreads"
-        }
-      }
-    },
-    {
       "id": "mini-2",
-      "date": "2026-10-04",
-      "title": "Mini #2",
+      "date": "2026-10-02",
+      "title": "Mini #1",
       "grid": [
         "HIT##",
         "IMAGE",
@@ -53,6 +25,34 @@
           "3": "\"Ooh, created Lake _____ all from her panties\" -Travis Scott, 90210",
           "5": "Sayer of yo",
           "6": "Time zone for the East Coast during spring and summer"
+        }
+      }
+    },
+    {
+      "id": "mini-1",
+      "date": "2026-10-03",
+      "title": "Mini #2",
+      "grid": [
+        "#BANE",
+        "COMER",
+        "ANGER",
+        "READS",
+        "EDYS#"
+      ],
+      "clues": {
+        "across": {
+          "1": "Kryptonite, like Luke to Edison",
+          "5": "An avid storm chaser",
+          "6": "Common emotion for Edison",
+          "7": "What Brian does to books",
+          "8": "Consumables, in brief"
+        },
+        "down": {
+          "1": "Gave dih to, slangily",
+          "2": "\"I __ ___\" exclamation for Conan",
+          "3": "Edison _____ this interview",
+          "4": "Makes a mistake, like not dating the Storm",
+          "5": "\"I don't ____\", BW said nonchalantly while shaking his dreads"
         }
       }
     },
@@ -81,6 +81,34 @@
           "3": "Poker-faced",
           "4": "Lee and Edwards lover",
           "5": "Running wild"
+        }
+      }
+    },
+    {
+      "id": "mini-4",
+      "date": "2026-10-05",
+      "title": "Mini #4",
+      "grid": [
+        "#VISA",
+        "FISHY",
+        "ESSAY",
+        "SOUR#",
+        "TREK#"
+      ],
+      "clues": {
+        "across": {
+          "1": "Common credit card",
+          "5": "Suspicious, or like my website's home page",
+          "6": "Laborious written assignment",
+          "7": "Rotten, like a mood",
+          "8": "Long haul"
+        },
+        "down": {
+          "1": "Beach cap that keeps the sun out of your eyes",
+          "2": "Problem",
+          "3": "Jaws, for one",
+          "4": "Enthusiastic cheer",
+          "5": "Oktober____"
         }
       }
     }
