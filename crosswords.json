@@ -111,6 +111,37 @@
           "5": "Oktober____"
         }
       }
+    },
+    {
+      "id": "mini-5",
+      "date": "2026-10-06",
+      "title": "Mini #5",
+      "grid": [
+        "###ELM",
+        "HAWAII",
+        "EDISON",
+        "RODENT",
+        "DRESSY",
+        "SEN###"
+      ],
+      "clues": {
+        "across": {
+          "1": "Road between Butler and Whitman",
+          "4": "Where DMac has a vacation house",
+          "7": "Victim of HL17",
+          "8": "Sewer dweller",
+          "9": "Fancy-clothed",
+          "10": "Congress member, abbr."
+        },
+        "down": {
+          "1": "Takes the pressure off",
+          "2": "Mascots of Columbia and Penn State",
+          "3": "Gum, flavor-wise",
+          "4": "Groups of cattle",
+          "5": "Really, really like",
+          "6": "Become more like 7-Across"
+        }
+      }
     }
   ]
 }

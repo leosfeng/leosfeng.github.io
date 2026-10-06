@@ -491,8 +491,11 @@
       .cw-thumb {
         display: grid;
         flex-shrink: 0;
-        grid-template-columns: repeat(var(--cols), 0.62rem);
-        grid-auto-rows: 0.62rem;
+        box-sizing: border-box;
+        width: calc(3.1rem + 6px);
+        height: calc(3.1rem + 6px);
+        grid-template-columns: repeat(var(--cols), 1fr);
+        grid-auto-rows: 1fr;
         gap: 1px;
         padding: 1px;
         border-radius: 2px;
@@ -971,6 +974,10 @@
       .cw-cell.is-block {
         background: hsl(214, 24%, 24%);
         cursor: default;
+      }
+
+      .cw-cell.is-ref {
+        background: hsl(52, 100%, 88%);
       }
 
       .cw-cell.in-word {
@@ -1545,6 +1552,6 @@
     </div>
     <script src="water.js"></script>
     <script src="fish-counter.js"></script>
-    <script src="crosswords.js"></script>
+    <script src="crosswords.js?v=6"></script>
   </body>
 </html>

@@ -140,6 +140,20 @@
       });
     });
 
+    DIRS.forEach(function (d) {
+      words[d].forEach(function (word) {
+        word.refs = [];
+        var pattern = /(\d+)\s*-\s*(across|down)\b/gi;
+        var match;
+        while ((match = pattern.exec(word.clue))) {
+          var target = words[match[2].toLowerCase()].filter(function (w) {
+            return w.num === Number(match[1]);
+          })[0];
+          if (target && target !== word && word.refs.indexOf(target) < 0) word.refs.push(target);
+        }
+      });
+    });
+
     return { rows: rows, cols: cols, cells: cells, words: words, at: at };
   }
 
@@ -318,10 +332,15 @@
     var word = cell[d];
     var other = cell[d === "across" ? "down" : "across"];
 
+    var refCells = [];
+    word.refs.forEach(function (ref) {
+      refCells = refCells.concat(ref.cells);
+    });
     model.cells.forEach(function (c) {
       if (!c.el) return;
       c.el.classList.toggle("is-active", c === cell);
       c.el.classList.toggle("in-word", c !== cell && word.cells.indexOf(c) >= 0);
+      c.el.classList.toggle("is-ref", refCells.indexOf(c) >= 0);
     });
     allWords().forEach(function (w) {
       if (!w.clueEl) return;
@@ -510,7 +529,7 @@
     stopTimer();
     root.classList.add("is-solved");
     model.cells.forEach(function (cell) {
-      if (cell.el) cell.el.classList.remove("is-active", "in-word", "is-wrong");
+      if (cell.el) cell.el.classList.remove("is-active", "in-word", "is-ref", "is-wrong");
     });
     allWords().forEach(function (word) {
       if (word.clueEl) word.clueEl.classList.remove("is-active", "is-cross");
