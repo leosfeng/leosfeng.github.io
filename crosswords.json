@@ -142,6 +142,70 @@
           "6": "Become more like 7-Across"
         }
       }
+    },
+    {
+      "id": "mini-6",
+      "date": "2026-10-07",
+      "title": "Mini #6",
+      "grid": [
+        "##POT",
+        "SHOVE",
+        "TOKEN",
+        "OPENS",
+        "PER##"
+      ],
+      "clues": {
+        "across": {
+          "1": "What the best hand takes",
+          "4": "Jam all-in",
+          "6": "Casino chip",
+          "7": "Makes the first bet",
+          "8": "The P in MPh"
+        },
+        "down": {
+          "1": "Game where Conan donates to his friends",
+          "2": "Where you bake things",
+          "3": "Fifth best pocket pair",
+          "4": "Cease movement",
+          "5": "What keeps optimists going"
+        }
+      }
+    },
+    {
+      "id": "mini-7",
+      "date": "2026-10-08",
+      "title": "Mini #7",
+      "grid": [
+        "###ROOM",
+        "##SERVE",
+        "CITADEL",
+        "ONA#ERE",
+        "NARRATE",
+        "ANVIL##",
+        "NEED###"
+      ],
+      "clues": {
+        "across": {
+          "1": "Living or dining",
+          "5": "Bring out, as cake",
+          "6": "Quant firm that gives out Lego sets and hats",
+          "8": "\"__ _ roll!\" (hot streak)",
+          "9": "Old-fashioned \"before\"",
+          "10": "Tell the story",
+          "12": "What we called Edison when he fell on Allen's arm",
+          "13": "Must have"
+        },
+        "down": {
+          "1": "Almost ready?",
+          "2": "A difficult situation",
+          "3": "Out in the open",
+          "4": "Free-for-all fight",
+          "5": "Go hungry, like the Tower members that eat dinner after Edison",
+          "6": "He's super nonchalant, good at swimming, and it's his birthday!",
+          "7": "Ridiculous",
+          "11": "Get ___ of"
+        }
+      }
     }
   ]
 }
