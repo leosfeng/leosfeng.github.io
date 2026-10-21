@@ -154,6 +154,18 @@
       });
     });
 
+    var theme = p.theme || {};
+    DIRS.forEach(function (d) {
+      (theme[d] || []).forEach(function (num) {
+        words[d].forEach(function (word) {
+          if (word.num !== Number(num)) return;
+          word.cells.forEach(function (cell) {
+            cell.theme = true;
+          });
+        });
+      });
+    });
+
     return { rows: rows, cols: cols, cells: cells, words: words, at: at };
   }
 
@@ -172,6 +184,7 @@
     root.innerHTML = "";
     root.classList.toggle("is-solved", solved);
     root.style.setProperty("--cols", model.cols);
+    root.classList.toggle("is-wide", allWords().length > 10);
 
     var back = el("a", "cw-back", "All minis");
     back.href = "#";
@@ -199,7 +212,7 @@
     var board = el("div", "cw-board");
     ui.grid = el("div", "cw-grid");
     model.cells.forEach(function (cell) {
-      var node = el("div", "cw-cell" + (cell.block ? " is-block" : ""));
+      var node = el("div", "cw-cell" + (cell.block ? " is-block" : cell.theme ? " is-theme" : ""));
       if (!cell.block) {
         if (cell.num) node.appendChild(el("span", "cw-num", String(cell.num)));
         cell.letterEl = el("span", "cw-letter", cell.letter);

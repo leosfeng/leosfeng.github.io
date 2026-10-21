@@ -146,7 +146,7 @@
     {
       "id": "mini-6",
       "date": "2026-10-07",
-      "title": "Mini #6",
+      "title": "Cards (Mini #6)",
       "grid": [
         "##POT",
         "SHOVE",
@@ -174,7 +174,7 @@
     {
       "id": "mini-7",
       "date": "2026-10-08",
-      "title": "Mini #7",
+      "title": "Nut Day (Mini #7)",
       "grid": [
         "###ROOM",
         "##SERVE",
@@ -204,6 +204,102 @@
           "6": "He's super nonchalant, good at swimming, and it's his birthday!",
           "7": "Ridiculous",
           "11": "Get ___ of"
+        }
+      }
+    },
+    {
+      "id": "mini-8",
+      "date": "2026-10-11",
+      "title": "S38 (Mini #8)",
+      "grid": [
+        "###DEPP",
+        "##CAMEO",
+        "#CHOICE",
+        "HOE#LAM",
+        "EVELYN#",
+        "RESET##",
+        "BRED###"
+      ],
+      "theme": { "across": [9], "down": [2, 4] },
+      "clues": {
+        "across": {
+          "1": "Jack Sparrow, or Amber Heard's ex",
+          "5": "Brief celebrity appearance",
+          "6": "The C in MCQ",
+          "7": "Garden tool, or bop",
+          "8": "Lamb without its tail?",
+          "9": "Singaporean who loves pheromones",
+          "11": "For 13 bands, someone will pour water on you to do this to your body count",
+          "12": "What 9-Across did to Allen (to make hypothetical babies)"
+        },
+        "down": {
+          "1": "Knife in Mandarin",
+          "2": "One courted with exotic fruits by Timmy J.",
+          "3": "Pie nut",
+          "4": "She arrives and people say, \"Dang\"",
+          "5": "A photographer's favorite word",
+          "6": "Musician's take on another's song",
+          "7": "Basil or thyme",
+          "10": "Light-emitting diode, for short"
+        }
+      }
+    },
+    {
+      "id": "mini-9",
+      "date": "2026-10-13",
+      "title": "Courting 101 (Mini #9)",
+      "grid": [
+        "AHA##",
+        "REP##",
+        "MANGO",
+        "STEEN",
+        "##ATE"
+      ],
+      "clues": {
+        "across": {
+          "1": "\"Now I get it!\"",
+          "4": "One push-up or squat",
+          "5": "Fruit in pomelo or sticky rice",
+          "8": "With 5-Across, best fruit to give a girl",
+          "9": "Had dinner"
+        },
+        "down": {
+          "1": "Places for biceps and triceps",
+          "2": "Enthalpy = work + ____",
+          "3": "Breathing disorder in your sleep",
+          "6": "Understand",
+          "7": "Less than two, greater than zero"
+        }
+      }
+    },
+    {
+      "id": "mini-10",
+      "date": "2026-10-20",
+      "title": "They're Everywhere (Mini #10)",
+      "grid": [
+        "#EGGS#",
+        "#QUAIL",
+        "CURDLE",
+        "TAGGED",
+        "ALLEN#",
+        "#SETT#"
+      ],
+      "clues": {
+        "across": {
+          "1": "See 5-Across",
+          "5": "With 1-Across, little gems found scattered throughout Wilf 405",
+          "7": "Clump found in expired milk",
+          "8": "Tab for photos someone else posted of you (like Rawnie)",
+          "9": "Twin of Andrew and enjoyer of 5-Across",
+          "10": "What settle and settings have in common"
+        },
+        "down": {
+          "1": "Is the same as, mathematically",
+          "2": "Bubbly stream sound",
+          "3": "Green equippable in Brawl Stars",
+          "4": "Precedes \"night\" or \"library\"",
+          "6": "Was winning",
+          "7": "Chicago transit org."
         }
       }
     }

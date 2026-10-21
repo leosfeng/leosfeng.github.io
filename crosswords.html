@@ -943,6 +943,34 @@
         gap: 1.75rem;
       }
 
+      .crossword.is-wide {
+        --cell: min(
+          3.25rem,
+          calc(19rem / var(--cols)),
+          calc((100vw - 3rem - 3px - (var(--cols) - 1) * 1px) / var(--cols))
+        );
+      }
+
+      .crossword.is-wide .cw-body {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+      }
+
+      .crossword.is-wide .cw-board {
+        align-self: center;
+      }
+
+      .crossword.is-wide .cw-clues {
+        flex-direction: row;
+        gap: 1.5rem;
+      }
+
+      .crossword.is-wide .cw-clue-group {
+        flex: 1;
+        min-width: 0;
+      }
+
       .cw-board {
         position: relative;
         flex-shrink: 0;
@@ -974,6 +1002,10 @@
       .cw-cell.is-block {
         background: hsl(214, 24%, 24%);
         cursor: default;
+      }
+
+      .cw-cell.is-theme {
+        background: hsl(268, 70%, 94%);
       }
 
       .cw-cell.is-ref {
@@ -1342,6 +1374,10 @@
         .cw-board {
           align-self: center;
         }
+
+        .crossword.is-wide .cw-clues {
+          flex-direction: column;
+        }
       }
     </style>
   </head>
@@ -1552,6 +1588,6 @@
     </div>
     <script src="water.js"></script>
     <script src="fish-counter.js"></script>
-    <script src="crosswords.js?v=6"></script>
+    <script src="crosswords.js?v=7"></script>
   </body>
 </html>
